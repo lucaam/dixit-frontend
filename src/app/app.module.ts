@@ -7,12 +7,19 @@ import { AppComponent } from './app.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { webUserNgService } from './services/userNg.service';
+import { StartgameComponent } from './startgame/startgame.component';
+import { CookieService } from 'ngx-cookie-service';
+import { DixitmainpageComponent } from './dixitmainpage/dixitmainpage.component';
+import { matchNgService } from './services/matchNg.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegistrationComponent,
     LoginComponent,
+    StartgameComponent,
+    DixitmainpageComponent,
   ],
   imports: [
     BrowserModule,
@@ -21,7 +28,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [webUserNgService,matchNgService, CookieService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

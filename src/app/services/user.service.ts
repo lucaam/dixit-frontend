@@ -20,5 +20,10 @@ async getUserProfile(id: any) {
       + this.globalVariables.apiUser + id,{headers: headers}).toPromise();
  }
 
+ async addNewUser(data){
+   return await this.http.post(this.globalVariables.apiURL+this.globalVariables.apiVersion 
+    + this.globalVariables.apiUser + 'register', data, {observe : 'response'}).toPromise();
+ }
+
 
 }

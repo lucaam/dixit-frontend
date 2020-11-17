@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
+import { webUserNgService } from '../services/userNg.service';
 
 @Component({
   selector: 'app-registration',
@@ -9,7 +10,9 @@ import { UserService } from '../services/user.service';
 })
 export class RegistrationComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private userService: UserService) { }
+  constructor(private fb: FormBuilder,
+    private userService : UserService,
+    private webUserNgService : webUserNgService) { }
 
   registrationForm = this.fb.group({
     name: ['' ,Validators.required],
@@ -22,10 +25,15 @@ export class RegistrationComponent implements OnInit {
   })
 
   ngOnInit(): void {
+    this.webUserNgService.webUsershared.subscribe(message=>{
+      console.log(message);
+    })
   }
 
   createUser(){
-    console.log(this.registrationForm.value);
+    this.userService.addNewUser(this.registrationForm.value).then(res =>{
+      console.log(res);
+    })
   }
 
 }
