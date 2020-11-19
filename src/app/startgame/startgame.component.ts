@@ -47,6 +47,13 @@ export class StartgameComponent implements OnInit {
 
   joinMatch(){
     console.log(this.joinMatchForm.value);
+    this.matchService.joinMatch(this.joinMatchForm.value).then(result =>{
+      console.log(result);
+      if(result.status === 200){
+        this.matchNgService.changeMatch(result.body);
+        this._router.navigateByUrl('/diximainpage');
+      }
+    })
 
   }
 

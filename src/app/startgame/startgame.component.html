@@ -27,7 +27,7 @@
                 <label for="match-name-join">Inserisci nome match</label>
                 <input formControlName="name" type="text" class="form-control" id="match-name-join" aria-describedby="match-name-joinHelp" placeholder="Inserisci nome match">
             </div>
-            <button type="submit" class="btn btn-primary">Unisciti al match</button>
+            <button type="submit" (click)="joinMatch()" class="btn btn-primary">Unisciti al match</button>
         </form>
 
     </div>

@@ -19,7 +19,11 @@ export class MatchService {
       + this.globalVariables.apiMatch, data, { headers: headers, observe: 'response' }).toPromise();
   }
 
-  async joinMatch(name: string) {
-
+  async joinMatch(namematch: string) {
+    let headers = new HttpHeaders();
+    headers = headers.append('auth-token', this.cookieDixi.getAuthTokenFromCookie());
+    return await this.http.post(this.globalVariables.apiURL + this.globalVariables.apiVersion
+      + this.globalVariables.apiMatch + "/join", namematch, { headers: headers, observe: 'response' }).toPromise();
   }
 }
+

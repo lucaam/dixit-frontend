@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { webUserModel } from '../classes/webUserModel';
 import { globalVariables } from '../services/globalVariables.service';
@@ -18,7 +19,8 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder, 
     private loginService: LoginService, 
     private webUserNgService : webUserNgService, 
-    private cookieService: CookieService) { }
+    private cookieService: CookieService,
+    private _router: Router) { }
 
   loginForm = this.fb.group({
     email: ['', [
@@ -41,6 +43,7 @@ export class LoginComponent implements OnInit {
       _.webUserNgService.changeWebUser(webUser);
       this.cookieService.set('auth-token', webUser.token);
       this.cookieService.set('user-id', webUser._id);
+      this._router.navigateByUrl('/startgame');
     });
     
   }
