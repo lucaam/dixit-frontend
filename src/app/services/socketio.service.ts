@@ -26,6 +26,13 @@ export class SocketioService {
     return await this.socket.emit("readyToPlay",{user: User, match: match});
   }
 
+  async readyToStart(){
+    return await this.socket.on('readyToStart', (data)=> {
+      console.log(data)
+      return data;
+     });
+   }
+
   async assignedCards(){
    return await this.socket.on('assignedCards', (data)=> {
      console.log(data);
