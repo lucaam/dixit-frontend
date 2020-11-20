@@ -24,14 +24,12 @@ export class DixitmainpageComponent implements OnInit {
   async ngOnInit() {
     this.matchNgService.matchshared.subscribe(match => {
       this.Match = match;
-      console.log(match);
-      console.log(this.Match);
+     
     });
     this.userNgService.webUsershared.subscribe(user => {
       this.User = user;
-      console.log(this.User);
     });
-    if (this.Match.name.length > 0 && this.User.name.length > 0) {
+    if (this.Match != undefined && this.User!= undefined) {
       this.socketService.setupSocketConnection();
 
       this.socketService.joinMatch(this.Match);
@@ -40,6 +38,7 @@ export class DixitmainpageComponent implements OnInit {
         console.log("Assigned Card");
         console.log(data);
       });
+  
 
       this.socketService.socket.on('newUserReady', (data) => {
         console.log("newUserReady");
