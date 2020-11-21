@@ -23,6 +23,9 @@ export class SocketioService {
 
 
   async readyToPlay(User: UserModel, match: MatchModel){
+    console.log('what I am passing is this user + ', User);
+    console.log('what I am passing is this match + ', match);
+
     return this.socket.emit('readyToPlay', { user: User, match: match });
   }
 
