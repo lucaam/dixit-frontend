@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
+import { CardModel } from '../classes/cardModel';
 import { MatchModel } from '../classes/matchModel';
 import { UserModel } from '../classes/userModel';
 
@@ -22,19 +23,19 @@ export class SocketioService {
   }
 
 
-  async readyToPlay(User: UserModel, match: MatchModel){
-    console.log('what I am passing is this user + ', User);
+  async readyToPlay(user: UserModel, match: MatchModel){
+    console.log('what I am passing is this user + ', user);
     console.log('what I am passing is this match + ', match);
 
-    return this.socket.emit('readyToPlay', { user: User, match: match });
+    return this.socket.emit('readyToPlay', { user: user, match: match });
   }
 
-  async addCardOnTable(User: UserModel, match: MatchModel){
-    return this.socket.emit('addCardOnTable', { card: User.card, match: match });
+  async addCardOnTable(User: UserModel, card: CardModel, match: MatchModel){
+    return this.socket.emit('addCardOnTable',{ user: User, match: match, card: card });
   }
 
-  async selectCard(User: UserModel, match: MatchModel){
-    return this.socket.emit('selectCard', { user: User, match: match });
+  async selectCardOnTable(User: UserModel, card: CardModel, match: MatchModel){
+    return this.socket.emit('selectCard', { user: User, match: match, card: card });
   }
 
   async readyToStart(){

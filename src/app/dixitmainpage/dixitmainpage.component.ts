@@ -17,6 +17,8 @@ export class DixitmainpageComponent implements OnInit {
   Match: MatchModel = new MatchModel();
   User: webUserModel = new webUserModel();
   CardsInHand: Array<CardModel> = new Array<CardModel>();
+  revealCards: boolean = false;
+  CardsOnTable: Array<CardModel> = new Array<CardModel>();
   constructor(private matchNgService: matchNgService,
               private userNgService: webUserNgService,
               private socketService: SocketioService) { }
@@ -38,13 +40,12 @@ export class DixitmainpageComponent implements OnInit {
       this.socketService.joinMatch(this.Match);
 
       this.socketService.socket.on('assignedCards', (data) => {
+        console.log(data);
 
-        this.CardsInHand = data.user.cards;
+        this.CardsInHand = data.cards;
 
-        console.log('this.cards = ', this.CardsInHand);
+        console.log('this.cards = ', this.CardsInHand);//carte da visualizzare per l'utente 7
 
-        console.log('Assigned Card');
-        console.log(data.user.cards);
       });
   
 
@@ -65,8 +66,9 @@ export class DixitmainpageComponent implements OnInit {
       this.socketService.socket.on('newCardOnTable', (data) => {
 
         console.log('There is a new card on table');
-
         console.log(data);
+
+        this.CardsOnTable.push(data);
 
       });
 
@@ -78,7 +80,19 @@ export class DixitmainpageComponent implements OnInit {
 
       });
 
+      this.socketService.socket.on('turnStart', (data) => {
 
+        console.log('Turn start');
+        console.log(data);
+        this.revealCards = true;
+      });
+
+      this.socketService.socket.on('turnEnded', (data) => {
+
+        console.log('Turn is ended');
+        console.log(data);
+
+      });
     }
 
   }
@@ -89,15 +103,21 @@ export class DixitmainpageComponent implements OnInit {
 
 
 
-  addCardOnTable() {
+  addCardOnTable(selectedCard) {
     console.log('Add a card on table');
-
+    console.log(selectedCard);
+    this.socketService.addCardOnTable(this.User,selectedCard, this.Match).then(res =>
+      console.log(res)
+      );
+      this.CardsOnTable.push(selectedCard);
   }
 
-  selectCard() {
+  selectCard(selectedCardOnTable) {
     console.log('Select a card that is on the table');
-
-
+    console.log( this.Match);
+    this.socketService.selectCardOnTable(this.User,selectedCardOnTable, this.Match).then(res =>
+      console.log(res)
+      );
 
   }
 

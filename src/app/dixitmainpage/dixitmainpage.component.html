@@ -1,10 +1,36 @@
-<p>diximainpage works!</p>
+<div class="row">
+    <div class="col-md-12">
+        <button (click)="readyToPlay()"> Pronto a giocare</button>
 
+        <button (click)="getCard()"> Prendi carte</button>
 
-<button (click)="readyToPlay()"> Pronto a giocare</button>
+        <button (click)="addCardOnTable()"> Aggiungi carta al tavolo</button>
 
-<button (click)="getCard()"> Prendi carte</button>
+        <button (click)="selectCard()"> Seleziona carta</button>
+    </div>
+</div>
+<p></p>
+<p></p>
+<p></p>
+<div class="row">
+    <h2>Mie carte</h2>
+    <div class="col-md-2 col-lg-2" *ngFor="let cardinHand of CardsInHand" (click)="addCardOnTable(cardinHand)">
+        <p>
+            {{cardinHand.name}}
+        </p>
+        <p>
+            {{cardinHand.picture}}
+        </p>
+    </div>
+</div>
 
-<button (click)="addCardOnTable()"> Aggiungi carta al tavolo</button>
+<div class="row">
+    <h2>Carte sul tavolo</h2>
 
-<button (click)="selectCard()"> Seleziona carta</button>
+    <div class="col-md-4" *ngFor="let cardOnTable of CardsOnTable">
+        <span (click)="selectCard(cardOnTable)" *ngIf="revealCards">
+            {{cardOnTable.name}}
+        </span>
+        <span *ngIf="!revealCards">Carta coperta</span>
+    </div>
+</div>
