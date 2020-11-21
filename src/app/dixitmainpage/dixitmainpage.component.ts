@@ -60,7 +60,6 @@ export class DixitmainpageComponent implements OnInit {
 
   }
 
-
   getCard() {
 
   }
