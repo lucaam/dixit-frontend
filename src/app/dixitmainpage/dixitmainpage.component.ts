@@ -18,42 +18,57 @@ export class DixitmainpageComponent implements OnInit {
   User: webUserModel = new webUserModel();
   CardsInHand: Array<CardModel> = new Array<CardModel>();
   constructor(private matchNgService: matchNgService,
-    private userNgService: webUserNgService,
-    private socketService: SocketioService) { }
+              private userNgService: webUserNgService,
+              private socketService: SocketioService) { }
 
   async ngOnInit() {
     this.matchNgService.matchshared.subscribe(match => {
       this.Match = match;
-      console.log(match);
-      console.log(this.Match);
+     
     });
     this.userNgService.webUsershared.subscribe(user => {
       this.User = user;
-      console.log(this.User);
     });
-    if (this.Match.name.length > 0 && this.User.name.length > 0) {
+    if (this.Match !== undefined && this.User !== undefined) {
       this.socketService.setupSocketConnection();
 
       this.socketService.joinMatch(this.Match);
 
       this.socketService.socket.on('assignedCards', (data) => {
-        console.log("Assigned Card");
+        console.log('Assigned Card');
         console.log(data);
       });
+  
 
       this.socketService.socket.on('newUserReady', (data) => {
-        console.log("newUserReady");
+        console.log('newUserReady');
 
         console.log(data);
       });
 
       this.socketService.socket.on('readyToStart', (data) => {
 
-        console.log("we are ready to start");
+        console.log('we are ready to start');
 
-        console.log(data)
+        console.log(data);
 
-      })
+      });
+
+      this.socketService.socket.on('newCardOnTable', (data) => {
+
+        console.log('There is a new card on table');
+
+        console.log(data);
+
+      });
+
+      this.socketService.socket.on('newCardSelected', (data) => {
+
+        console.log('A user selected a card');
+
+        console.log(data);
+
+      });
 
 
     }
@@ -61,6 +76,20 @@ export class DixitmainpageComponent implements OnInit {
   }
 
   getCard() {
+
+  }
+
+
+
+  addCardOnTable() {
+    console.log('Add a card on table');
+
+  }
+
+  selectCard() {
+    console.log('Select a card that is on the table');
+
+
 
   }
 
