@@ -2,35 +2,46 @@
     <div class="col-md-12">
         <button (click)="readyToPlay()"> Pronto a giocare</button>
 
-        <button (click)="getCard()"> Prendi carte</button>
 
-        <button (click)="addCardOnTable()"> Aggiungi carta al tavolo</button>
-
-        <button (click)="selectCard()"> Seleziona carta</button>
-    </div>
-</div>
-<p></p>
-<p></p>
-<p></p>
-<div class="row">
-    <h2>Mie carte</h2>
-    <div class="col-md-2 col-lg-2" *ngFor="let cardinHand of CardsInHand" (click)="addCardOnTable(cardinHand)">
-        <p>
-            {{cardinHand.name}}
-        </p>
-        <p>
-            {{cardinHand.picture}}
-        </p>
     </div>
 </div>
 
 <div class="row">
-    <h2>Carte sul tavolo</h2>
+    <div class="col-md-3 col-lg-3">
+        <h2>Dati</h2>
 
-    <div class="col-md-4" *ngFor="let cardOnTable of CardsOnTable">
-        <span (click)="selectCard(cardOnTable)" *ngIf="revealCards">
-            {{cardOnTable.name}}
-        </span>
-        <span *ngIf="!revealCards">Carta coperta</span>
+            User: {{User.username}} <span *ngIf="User.username == Match.narrator.username">You are the narrator</span>
+        
+      
+            Match: {{Match.name}} 
+
+            Points: {{User.score}}
+       
     </div>
+</div>
+<div class="row">
+    <div class="col-md-3 col-lg-3">
+        <h2>Mie carte</h2>
+
+        <div class="alert alert-dark" role="alert" *ngFor="let cardinHand of CardsInHand" (click)="addCardOnTable(cardinHand)">
+            <span> {{cardinHand.name}} </span>
+          </div>
+    </div>
+</div>
+
+<div class="row">
+  
+    <div class="col-md-3">
+        <h2>Carte sul tavolo</h2>
+    
+        <div class="alert alert-dark" role="alert" *ngFor="let cardOnTable of CardsOnTable">
+    
+            <span (click)="selectCard(cardOnTable)" *ngIf="revealCards">
+                {{cardOnTable.name}}
+            </span>
+
+            <span *ngIf="!revealCards">Carta coperta</span>
+        </div>
+    </div>
+
 </div>
