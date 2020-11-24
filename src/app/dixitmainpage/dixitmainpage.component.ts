@@ -92,6 +92,12 @@ export class DixitmainpageComponent implements OnInit {
         console.log('Turn is ended');
         console.log(data);
 
+        this.User = data.users.filter((x: webUserModel) => x.username === this.User.username)[0];
+        this.Match = data;
+        this.CardsOnTable = [];
+        this.revealCards = true;
+
+
       });
     }
 
