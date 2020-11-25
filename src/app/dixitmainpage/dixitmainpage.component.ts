@@ -95,7 +95,8 @@ export class DixitmainpageComponent implements OnInit {
         this.User = data.users.filter((x: webUserModel) => x.username === this.User.username)[0];
         this.Match = data;
         this.CardsOnTable = [];
-        this.revealCards = true;
+        this.CardsInHand = this.User.cards;
+        this.revealCards = false;
 
 
       });
