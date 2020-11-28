@@ -19,6 +19,13 @@ export class DixitmainpageComponent implements OnInit {
   CardsInHand: Array<CardModel> = new Array<CardModel>();
   revealCards: boolean = false;
   CardsOnTable: Array<CardModel> = new Array<CardModel>();
+
+
+  // Will allow the user click on his card when false
+  cardAdded: boolean = true;
+
+  // Will allow the user select a card on the table when it is false
+  cardSelected: boolean = false;
   constructor(private matchNgService: matchNgService,
               private userNgService: webUserNgService,
               private socketService: SocketioService) { }
@@ -43,13 +50,14 @@ export class DixitmainpageComponent implements OnInit {
         console.log(data);
 
         this.CardsInHand = data.cards;
-
         console.log('this.cards = ', this.CardsInHand);//carte da visualizzare per l'utente 7
 
       });
   
 
       this.socketService.socket.on('newUserReady', (data) => {
+
+        // Happens when a user click on button "Pronto a giocare"
         console.log('newUserReady');
 
         console.log(data);
@@ -59,16 +67,18 @@ export class DixitmainpageComponent implements OnInit {
 
         console.log('we are ready to start');
 
+        // Happens when all players clicked on button "Pronto a giocare"
+        this.cardAdded = false;
+        
         console.log(data);
 
       });
 
       this.socketService.socket.on('newCardOnTable', (data) => {
-
+        this.CardsOnTable.push(data);
         console.log('There is a new card on table');
         console.log(data);
 
-        this.CardsOnTable.push(data);
 
       });
 
@@ -97,14 +107,19 @@ export class DixitmainpageComponent implements OnInit {
         this.CardsOnTable = [];
         this.CardsInHand = this.User.cards;
         this.revealCards = false;
-
+        this.cardSelected = false;
+        this.cardAdded = false;
 
       });
+
+      this.socketService.socket.on('endMatch', (data) => {
+        console.log('Someone won');
+        console.log(data);
+    
+    
+      });
+      
     }
-
-  }
-
-  getCard() {
 
   }
 
@@ -113,16 +128,21 @@ export class DixitmainpageComponent implements OnInit {
   addCardOnTable(selectedCard) {
     console.log('Add a card on table');
     console.log(selectedCard);
-    this.socketService.addCardOnTable(this.User,selectedCard, this.Match).then(res =>
+    this.cardAdded = true;
+
+    this.CardsOnTable.push(selectedCard);
+    this.socketService.addCardOnTable(this.User, selectedCard, this.Match).then(res =>
       console.log(res)
       );
-      this.CardsOnTable.push(selectedCard);
+
   }
 
   selectCard(selectedCardOnTable) {
     console.log('Select a card that is on the table');
     console.log( this.Match);
-    this.socketService.selectCardOnTable(this.User,selectedCardOnTable, this.Match).then(res =>
+    this.cardSelected = true;
+
+    this.socketService.selectCardOnTable(this.User, selectedCardOnTable, this.Match).then(res =>
       console.log(res)
       );
 
@@ -130,7 +150,7 @@ export class DixitmainpageComponent implements OnInit {
 
   readyToPlay() {
     console.log(this.User);
-  
+
     this.socketService.readyToPlay(this.User, this.Match);
 
   }

@@ -1,0 +1,10 @@
+.card:hover {
+    transform: scale(1, 1, 1);
+    cursor: pointer;
+}
+
+.disabled-card {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.5;
+}
