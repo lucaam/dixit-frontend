@@ -19,28 +19,7 @@
 
     </div>
 </div>
-<div class="row">
-    <div>
-        <h2>Mie carte</h2>
-    </div>
-</div>
 
-<div class="row">
-
-    <div class="col-3" *ngFor="let cardinHand of CardsInHand" (click)="addCardOnTable(cardinHand)">
-
-        <div class="card" [ngClass]="{'disabled-card': cardAdded == true}">
-            <img class="card-img-top" src="https://via.placeholder.com/120x250.png" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title"> {{cardinHand.name}} </h5>
-            </div>
-            <div class="card-footer">
-                <small class="text-muted">La tua carta</small>
-            </div>
-        </div>
-    </div>
-
-</div>
 
 <div class="row">
 
@@ -51,7 +30,7 @@
 
 </div>
 
-<div class="row">
+<div class="row ">
 
     <div class="col-3" *ngFor="let cardOnTable of CardsOnTable">
         <div class="card"
@@ -67,5 +46,92 @@
         </div>
     </div>
 
+
+    <div class="row " >
+        <div>
+            <h2>Mie carte</h2>
+        </div>
+    </div>
+    
+    <div class="row">
+    
+        <div class="col-3" *ngFor="let cardinHand of CardsInHand" (click)="addCardOnTable(cardinHand)">
+    
+            <div class="card" [ngClass]="{'disabled-card': cardAdded == true}">
+                <img class="card-img-top" src="https://via.placeholder.com/120x250.png" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title"> {{cardinHand.name}} </h5>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">La tua carta</small>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+    <div class="row " >
+        <div>
+            <h2>Tabellone</h2>
+        </div>
+    </div>
+    
+   
+    <div class="row">
+
+        <div class="col-12">
+            <div class="board">
+                <div id="1">1
+                    <span class="pedina">
+                        P
+                    </span>
+                    <span class="pedina">
+                        A
+                    </span>
+                    <span class="pedina">
+                        B
+                    </span>
+                </div>
+                <div id="2">2</div>
+                <div id="3">3</div>
+                <div id="4">4</div>
+                <div id="5">5</div>
+                <div id="6">6</div>
+                <div id="7">7</div>
+                <div id="8">8</div>
+                <div id="9">9</div>
+                <div id="10">10</div>
+                <div id="11">11</div>
+                <div id="12">12
+                    <span class="pedina">
+                        C
+                    </span>
+                </div>
+                <div id="13">13</div>
+                <div id="14">14</div>
+                <div id="15">15</div>
+                <div id="16">16</div>
+                <div id="17">17</div>
+                <div id="18">18</div>
+                <div id="19">19</div>
+                <div id="20">20</div>
+                <div id="21">21</div>
+                <div id="22">22</div>
+                <div id="23">23</div>
+                <div id="24">24
+                    <span class="pedina">
+                        D
+                    </span>
+                </div>
+                <div id="25">25</div>
+                <div id="26">26</div>
+                <div id="27">27</div>
+                <div id="28">28</div>
+                <div id="29">29</div>
+                <div id="30">30</div>
+            </div>
+        </div>
+
+    </div>
 
 </div>
