@@ -7,8 +7,11 @@
 </div>
 
 <div class="row">
-    <div class="col-md-3 col-lg-3">
-        <h2>Dati</h2>
+<div>    <h2>Dati</h2>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-5 col-lg-5">
 
         User: {{User.username}} <span *ngIf="User.username == Match.narrator.username">You are the narrator</span>
 
@@ -17,6 +20,12 @@
 
         Points: {{User.score}}
 
+    </div>
+    <div class="col-md-7 col-lg-7">
+
+       <div class="pedine" id="pedine">
+
+       </div>
     </div>
 </div>
 
@@ -81,17 +90,7 @@
 
         <div class="col-12">
             <div class="board">
-                <div id="1">1
-                    <span class="pedina">
-                        P
-                    </span>
-                    <span class="pedina">
-                        A
-                    </span>
-                    <span class="pedina">
-                        B
-                    </span>
-                </div>
+                <div id="1">1</div>
                 <div id="2">2</div>
                 <div id="3">3</div>
                 <div id="4">4</div>
@@ -102,11 +101,7 @@
                 <div id="9">9</div>
                 <div id="10">10</div>
                 <div id="11">11</div>
-                <div id="12">12
-                    <span class="pedina">
-                        C
-                    </span>
-                </div>
+                <div id="12">12</div>
                 <div id="13">13</div>
                 <div id="14">14</div>
                 <div id="15">15</div>
@@ -118,11 +113,7 @@
                 <div id="21">21</div>
                 <div id="22">22</div>
                 <div id="23">23</div>
-                <div id="24">24
-                    <span class="pedina">
-                        D
-                    </span>
-                </div>
+                <div id="24">24</div>
                 <div id="25">25</div>
                 <div id="26">26</div>
                 <div id="27">27</div>
