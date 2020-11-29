@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { DixitmainpageComponent } from './dixitmainpage/dixitmainpage.component';
+import { InsertcardsComponent } from './insertcards/insertcards.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { StartgameComponent } from './startgame/startgame.component';
@@ -35,6 +36,18 @@ const routes: Routes = [
     path: '',
     component: LoginComponent,
     data: { title: 'Login' },
+    
+  },
+  {
+    path: 'insertcard',
+    component: InsertcardsComponent,
+    data: { title: 'InsertCard' },
+    
+  },
+  {
+    path: 'insertCard',
+    component: InsertcardsComponent,
+    data: { title: 'InsertCard' },
     
   }
 ];

@@ -12,14 +12,17 @@ import { StartgameComponent } from './startgame/startgame.component';
 import { CookieService } from 'ngx-cookie-service';
 import { DixitmainpageComponent } from './dixitmainpage/dixitmainpage.component';
 import { matchNgService } from './services/matchNg.service';
+import { InsertcardsComponent } from './insertcards/insertcards.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegistrationComponent,
     LoginComponent,
+    InsertcardsComponent,
     StartgameComponent,
     DixitmainpageComponent,
+    InsertcardsComponent,
   ],
   imports: [
     BrowserModule,

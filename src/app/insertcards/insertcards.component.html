@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-lg-6">
+        <h1>Inserisci carta</h1>
+        <form [formGroup]="insertCardForm">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Descrizione carta</label>
+                <input formControlName="name" type="text" class="form-control" id="nameCard" aria-describedby="cardNameHelp" placeholder="Carta esempio">
+                <small id="cardNameHelp" class="form-text text-muted">Scrivi tutto in piccolo</small>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Nome file carta</label>
+                <input formControlName="picture" type="text" class="form-control" id="pictureCard" ria-describedby="cardPictureHelp" placeholder="esempio1.jpg">
+                <small id="cardPictureHelp" class="form-text text-muted">Inserisci il nome dell'immagine e la sua estensione (jpg, jpeg, png)</small>
+
+            </div>
+            <button (click)="insertCard()" type="submit" class="btn btn-primary">Aggiungi</button>
+        </form>
+    </div>
+</div>
