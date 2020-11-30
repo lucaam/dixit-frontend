@@ -1,31 +1,64 @@
 <div class="row">
-    <div class="col-md-12 col-lg-6">
+    <div class="col-lg-6">
+        <h1>Registrati</h1>
         <form [formGroup]="registrationForm">
             <div class="form-group">
                 <label for="registration-name">Nome</label>
-                <input formControlName="name" type="text" class="form-control" id="registration-name" aria-describedby="nameHelp" placeholder="Inserisci il  nome">
+                <input formControlName="name" type="text" class="form-control" id="registration-name" aria-describedby="nameHelp" placeholder="Inserisci il tuo nome">
+                <small id="nameHelp" class="form-text text-muted">Inserisci il tuo vero nome.</small>
+
+                <small *ngIf="registrationForm.controls['name'].errors?.required && (registrationForm.controls['name'].dirty || registrationForm.controls['name'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Campo richiesto</small>
+                <small *ngIf="registrationForm.controls['name'].errors?.minlength && (registrationForm.controls['name'].dirty || registrationForm.controls['name'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">La lunghezza minima della carta deve essere di 4 caratteri</small>
+                <small *ngIf="registrationForm.controls['name'].errors?.pattern && (registrationForm.controls['name'].dirty || registrationForm.controls['name'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Il nome deve terminare con .jpg, .jpeg o .png</small>
+
             </div>
             <div class="form-group">
                 <label for="registration-surname">Cognome</label>
-                <input formControlName="surname" type="text" class="form-control" id="registration-surname" aria-describedby="surnameHelp" placeholder="Enter email">
-                <small id="surnameHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <input formControlName="surname" type="text" class="form-control" id="registration-surname" aria-describedby="surnameHelp" placeholder="Inserisci il tuo cognome">
+                <small id="surnameHelp" class="form-text text-muted">Inserisci il tuo vero nome.</small>
+                <small *ngIf="registrationForm.controls['surname'].errors?.required && (registrationForm.controls['surname'].dirty || registrationForm.controls['surname'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Campo richiesto</small>
+                <small *ngIf="registrationForm.controls['surname'].errors?.minlength && (registrationForm.controls['surname'].dirty || registrationForm.controls['surname'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">La lunghezza minima della carta deve essere di 4 caratteri</small>
+                <small *ngIf="registrationForm.controls['surname'].errors?.pattern && (registrationForm.controls['surname'].dirty || registrationForm.controls['surname'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Il nome deve terminare con .jpg, .jpeg o .png</small>
+
             </div>
             <div class="form-group">
                 <label for="registration-email">Email</label>
-                <input formControlName="email" type="email" class="form-control" id="registration-email" aria-describedby="emailHelp" placeholder="Enter email">
+                <input formControlName="email" type="email" class="form-control" id="registration-email" aria-describedby="emailHelp" placeholder="example@email.com">
                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <small *ngIf="registrationForm.controls['email'].errors?.required && (registrationForm.controls['email'].dirty || registrationForm.controls['email'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Campo richiesto</small>
+                <small *ngIf="registrationForm.controls['email'].errors?.minlength && (registrationForm.controls['email'].dirty || registrationForm.controls['email'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">La lunghezza minima della email deve essere di 6 caratteri</small>
+                <small *ngIf="registrationForm.controls['email'].errors?.pattern && (registrationForm.controls['email'].dirty || registrationForm.controls['email'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Inserisci una email valida</small>
+
             </div>
             <div class="form-group">
                 <label for="registration-username">Username</label>
-                <input formControlName="username" type="email" class="form-control" id="registration-username" aria-describedby="usernameHelp" placeholder="Enter email">
-                <small id="usernameHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <input formControlName="username" type="email" class="form-control" id="registration-username" aria-describedby="usernameHelp" placeholder="Inserisci uno username">
+                <small id="usernameHelp" class="form-text text-muted">Inventa un nickname figo, lo vedranno gli altri giocatori!</small>
+                <small *ngIf="registrationForm.controls['username'].errors?.required && (registrationForm.controls['username'].dirty || registrationForm.controls['username'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Campo richiesto</small>
+                <small *ngIf="registrationForm.controls['username'].errors?.minlength && (registrationForm.controls['username'].dirty || registrationForm.controls['username'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">La lunghezza minima della carta deve essere di 4 caratteri</small>
+                <small *ngIf="registrationForm.controls['username'].errors?.pattern && (registrationForm.controls['username'].dirty || registrationForm.controls['username'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Il nome deve terminare con .jpg, .jpeg o .png</small>
+
             </div>
             <div class="form-group">
                 <label for="registration-password">Password</label>
-                <input formControlName="password" type="password" class="form-control" id="registration-password" placeholder="Password">
+                <input formControlName="password" type="password" class="form-control" id="registration-password" placeholder="Inserisci la password">
+                <small id="passwordHelp" class="form-text text-muted">Minimo 8 caratteri. Deve contentere almeno un numero, una maiuscola, una minuscola e un carattere speciale</small>
+                <small *ngIf="registrationForm.controls['password'].errors?.required && (registrationForm.controls['password'].dirty || registrationForm.controls['password'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Campo richiesto</small>
+                <small *ngIf="registrationForm.controls['password'].errors?.minlength && (registrationForm.controls['password'].dirty || registrationForm.controls['password'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">La lunghezza minima della carta deve essere di 4 caratteri</small>
+                <small *ngIf="registrationForm.controls['password'].errors?.pattern && (registrationForm.controls['password'].dirty || registrationForm.controls['password'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Minimo 8 caratteri. Deve contentere almeno un numero, una maiuscola, una minuscola e un carattere speciale</small>
+
             </div>
 
             <button [disabled]="registrationForm.invalid" (click)="createUser()" type="submit" class="btn btn-primary">Submit</button>
         </form>
+    </div>
+
+    <div class=" col-2 align-self-center">
+        <span>oppure </span>
+
+    </div>
+
+    <div class="col-4 align-self-center">
+        <button class="btn btn-primary" routerLink="/">Accedi</button>
     </div>
 </div>

@@ -1,18 +1,36 @@
 <div class="row">
-    <span routerLink="/userRegistration">Registrati</span>
     <div class="col-lg-6">
-        <h1>Login</h1>
+        <h1>Accedi</h1>
         <form [formGroup]="loginForm">
             <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input formControlName="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <label for="exampleInputEmail1">Email</label>
+                <input formControlName="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="example@email.com">
+                <small id="emailHelp" class="form-text text-muted">Inserisci l'email usata in fase di registrazione.</small>
+                <small *ngIf="loginForm.controls['email'].errors?.required && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Campo richiesto</small>
+                <small *ngIf="loginForm.controls['email'].errors?.minlength && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">La lunghezza email deve essere di 6 caratteri</small>
+                <small *ngIf="loginForm.controls['email'].errors?.pattern && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Inserisci una email valida</small>
+
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Password</label>
-                <input formControlName="password" type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                <input formControlName="password" type="text" class="form-control" id="exampleInputPassword1" placeholder="Inserisci la password">
+                <small id="passwordHelp" class="form-text text-muted">Inserisci la password con cui ti sei registrato.</small>
+
+                <small *ngIf="loginForm.controls['password'].errors?.required && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Campo richiesto</small>
+                <small *ngIf="loginForm.controls['password'].errors?.minlength && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">La lunghezza minima della carta deve essere di 4 caratteri</small>
+                <small *ngIf="loginForm.controls['password'].errors?.pattern && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Minimo 8 caratteri. Deve contentere almeno un numero, una maiuscola, una minuscola e un carattere speciale</small>
+
             </div>
-            <button (click)="sendLogin()" type="submit" class="btn btn-primary">Submit</button>
+            <button [disabled]="loginForm.invalid" (click)="sendLogin()" type="submit" class="btn btn-primary">Accedi</button>
         </form>
+    </div>
+
+    <div class=" col-2 align-self-center">
+        <span>oppure </span>
+
+    </div>
+
+    <div class="col-4 align-self-center">
+        <button class="btn btn-primary" routerLink="/userRegistration">Registrati</button>
     </div>
 </div>
