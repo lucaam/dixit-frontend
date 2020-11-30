@@ -19,12 +19,12 @@ export class StartgameComponent implements OnInit {
 
 
   createMatchForm = this.fb.group({
-    name: ['' ,Validators.required],
-    expectedPlayers: ['',Validators.required]
+    name: ['' , [Validators.required, Validators.minLength(4), Validators.maxLength(255)]],
+    expectedPlayers: ['', [ Validators.required, Validators.min(3), Validators.max(12)] ]
   });
 
   joinMatchForm = this.fb.group({
-    name: ['' ,Validators.required],
+    name: ['' , [Validators.required, Validators.minLength(4), Validators.maxLength(255)]],
   });
 
   ngOnInit(): void {
