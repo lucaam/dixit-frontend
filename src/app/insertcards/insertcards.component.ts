@@ -10,6 +10,9 @@ import { InsertcardsService } from '../services/insertcards.service';
 })
 export class InsertcardsComponent implements OnInit {
 
+  cardSent: boolean = false;
+  buttonClicked: boolean = false;
+  cardInserted: boolean;
 
   constructor(private fb: FormBuilder,
               private insertCardService: InsertcardsService,
@@ -32,9 +35,31 @@ export class InsertcardsComponent implements OnInit {
 
 
   insertCard() {
+    this.cardSent = true;
+    this.buttonClicked = true;
     let _ = this;
     _.insertCardService.insertCard(this.insertCardForm.value).then(res => {
-      console.log('Card inserted');
+      
+        if(res.status == 200){
+
+          _.cardInserted = true;
+          _.cardSent = false;
+          setTimeout(function () {
+            _.buttonClicked = false;
+            
+         }, 4000);
+       
+
+        }
+    }).catch(err => {
+      if(err.status == 400){
+        _.cardInserted = false;
+        _.cardSent = false;
+        setTimeout(function () {
+          _.buttonClicked = false;
+          
+       }, 4000);
+       }
     });
 
 
