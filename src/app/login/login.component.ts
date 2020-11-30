@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
     _.loginService.sendLogin(this.loginForm.value).then(res =>{
       var webUser = new webUserModel();
       webUser.setWebUser(res.body['user'], res.body['token']);
+      localStorage.setItem('user', JSON.stringify(webUser));
       _.webUserNgService.changeWebUser(webUser);
       this.cookieService.set('auth-token', webUser.token);
       this.cookieService.set('user-id', webUser._id);

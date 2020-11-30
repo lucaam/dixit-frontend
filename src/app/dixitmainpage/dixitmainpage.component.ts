@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { CardModel } from '../classes/cardModel';
 import { MatchModel } from '../classes/matchModel';
@@ -7,6 +8,7 @@ import { webUserModel } from '../classes/webUserModel';
 import { matchNgService } from '../services/matchNg.service';
 import { SocketioService } from '../services/socketio.service';
 import { webUserNgService } from '../services/userNg.service';
+import { browserRefresh } from '../app.component';
 
 @Component({
   selector: 'app-dixitmainpage',
@@ -19,6 +21,7 @@ export class DixitmainpageComponent implements OnInit {
   CardsInHand: Array<CardModel> = new Array<CardModel>();
   revealCards: boolean = false;
   CardsOnTable: Array<CardModel> = new Array<CardModel>();
+  public browserRefresh: boolean;
 
 
   // Will allow the user click on his card when false
@@ -27,20 +30,46 @@ export class DixitmainpageComponent implements OnInit {
   // Will allow the user select a card on the table when it is false
   cardSelected: boolean = false;
   constructor(private matchNgService: matchNgService,
-              private userNgService: webUserNgService,
-              private socketService: SocketioService) { }
+    private userNgService: webUserNgService,
+    private socketService: SocketioService,
+    private router: Router) { }
 
   async ngOnInit() {
+
+    this.browserRefresh = browserRefresh;
+
+      
+
     this.matchNgService.matchshared.subscribe(match => {
       this.Match = match;
-     
-    });
-    this.userNgService.webUsershared.subscribe(user => {
-      this.User = user;
-      console.log("this.user", this.User);
-      console.log("user", user);
+      if(!browserRefresh){
+        //restore from local storage
+        localStorage.setItem('match', JSON.stringify(this.Match));
+        console.log("Match setted: " + this.Match.name);
+      }
+      if(browserRefresh){
+        //restore from local storage
+        this.Match = JSON.parse(localStorage.getItem('match'));
+        console.log("Match restored: " + this.Match.name);
+      }
 
     });
+
+
+    this.userNgService.webUsershared.subscribe(user => {
+      this.User = user;
+      if(browserRefresh){
+        //restore from local storage
+        console.log("Restore from local storage");
+        this.User = JSON.parse(localStorage.getItem('user'));
+  
+        console.log("User restored: " + this.User.username);
+      }
+    });
+
+    
+
+
     if (this.Match !== undefined && this.User !== undefined) {
       this.socketService.setupSocketConnection();
 
@@ -53,13 +82,13 @@ export class DixitmainpageComponent implements OnInit {
         console.log('this.cards = ', this.CardsInHand);//carte da visualizzare per l'utente 7
 
       });
-  
+
 
       this.socketService.socket.on('newUserReady', (data) => {
 
         // Happens when a user click on button "Pronto a giocare"
         console.log('newUserReady');
-
+        this.Match.users.push(data);
         console.log(data);
       });
 
@@ -69,7 +98,7 @@ export class DixitmainpageComponent implements OnInit {
 
         // Happens when all players clicked on button "Pronto a giocare"
         this.cardAdded = false;
-        
+
         console.log(data);
 
       });
@@ -115,10 +144,10 @@ export class DixitmainpageComponent implements OnInit {
       this.socketService.socket.on('endMatch', (data) => {
         console.log('Someone won');
         console.log(data);
-    
-    
+
+
       });
-      
+
     }
 
   }
@@ -133,18 +162,18 @@ export class DixitmainpageComponent implements OnInit {
     this.CardsOnTable.push(selectedCard);
     this.socketService.addCardOnTable(this.User, selectedCard, this.Match).then(res =>
       console.log(res)
-      );
+    );
 
   }
 
   selectCard(selectedCardOnTable) {
     console.log('Select a card that is on the table');
-    console.log( this.Match);
+    console.log(this.Match);
     this.cardSelected = true;
 
     this.socketService.selectCardOnTable(this.User, selectedCardOnTable, this.Match).then(res =>
       console.log(res)
-      );
+    );
 
   }
 
