@@ -14,7 +14,7 @@ export class LoginService {
   async sendLogin(data: any) {
 
     return  await this.http.post
-       (this.globalVariables.apiURL+this.globalVariables.apiVersion + this.globalVariables.apiUser+ "login",
+       (this.globalVariables.apiURL + this.globalVariables.apiVersion + this.globalVariables.apiUser + 'login',
          data, { observe: 'response' }).toPromise();
    }
 
