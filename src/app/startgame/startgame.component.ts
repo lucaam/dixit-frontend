@@ -10,8 +10,8 @@ import { matchNgService } from '../services/matchNg.service';
   styleUrls: ['./startgame.component.scss']
 })
 export class StartgameComponent implements OnInit {
-  
-  constructor(private fb: FormBuilder, 
+
+  constructor(private fb: FormBuilder,
               private matchService: MatchService,
               private _router: Router,
               private matchNgService: matchNgService) { }
@@ -31,7 +31,7 @@ export class StartgameComponent implements OnInit {
 
   }
 
-  createMatch(){
+  createMatch(): void{
     console.log(this.createMatchForm.value);
 
     this.matchService.createMatch(this.createMatchForm.value).then(result =>
@@ -41,19 +41,19 @@ export class StartgameComponent implements OnInit {
           this._router.navigateByUrl('/diximainpage');
         }
         console.log(result);
-      })
+      });
 
   }
 
-  joinMatch(){
+  joinMatch(): void{
     console.log(this.joinMatchForm.value);
     this.matchService.joinMatch(this.joinMatchForm.value).then(result =>{
       console.log(result);
-      if(result.status === 200){
+      if ( result.status === 200 ){
         this.matchNgService.changeMatch(result.body);
         this._router.navigateByUrl('/diximainpage');
       }
-    })
+    });
 
   }
 

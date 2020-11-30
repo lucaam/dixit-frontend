@@ -1,94 +1,29 @@
-<div class="row">
-    <div class="col-md-12">
-        <button (click)="readyToPlay()"> Pronto a giocare</button>
+<div class="container-fluid">
 
-
-    </div>
-</div>
-
-<div class="row">
-<div>    <h2>Dati</h2>
-</div>
-</div>
-<div class="row">
-    <div class="col-md-5 col-lg-5">
-
-        User: {{User.username}} <span *ngIf="User.username == Match.narrator.username">You are the narrator</span>
-
-
-        Match: {{Match.name}}
-
-        Points: {{User.score}}
-
-    </div>
-    <div class="col-md-7 col-lg-7">
-
-       <div class="pedine" id="pedine">
-
-       </div>
-    </div>
-</div>
-
-
-<div class="row">
-
-
-    <div>
-        <h2>Carte sul tavolo</h2>
-    </div>
-
-</div>
-
-<div class="row ">
-
-    <div class="col-3" *ngFor="let cardOnTable of CardsOnTable">
-        <div class="card"
-            [ngClass]="{'disabled-card': User.username == Match.narrator.username || CardsInHand.includes(cardOnTable) || cardSelected == true}"
-            (click)="selectCard(cardOnTable)" *ngIf="revealCards">
-            <img class="card-img-top" src="https://via.placeholder.com/120x250.png" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title"> {{cardOnTable.name}} </h5>
-            </div>
-            <div *ngIf="CardsInHand.includes(cardOnTable)" class="card-footer">
-                <small class="text-muted">La tua carta</small>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="row " >
-        <div>
-            <h2>Mie carte</h2>
-        </div>
-    </div>
-    
     <div class="row">
-    
-        <div class="col-3" *ngFor="let cardinHand of CardsInHand" (click)="addCardOnTable(cardinHand)">
-    
-            <div class="card" [ngClass]="{'disabled-card': cardAdded == true}">
-                <img class="card-img-top" src="https://via.placeholder.com/120x250.png" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title"> {{cardinHand.name}} </h5>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">La tua carta</small>
-                </div>
-            </div>
-        </div>
-    
-    </div>
-
-    <div class="row " >
-        <div>
-            <h2>Tabellone</h2>
-        </div>
-    </div>
-    
-   
-    <div class="row">
-
         <div class="col-12">
+            <button class="btn btn-primary" (click)="readyToPlay()"> Pronto a giocare</button>
+        </div>
+    </div>
+
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h2>Dati</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5 col-lg-5">
+
+            <p>User: {{User.username}} <span *ngIf="User.username == Match.narrator.username"> - narrator</span></p> 
+            <p>Match: {{Match.name}}</p> 
+            <p>Points: {{User.score}}</p> 
+
+        </div>
+        
+        <div class="col-7">
             <div class="board">
                 <div id="1">1</div>
                 <div id="2">2</div>
@@ -124,5 +59,75 @@
         </div>
 
     </div>
-
 </div>
+
+
+<div class="container-fluid">
+    <div class="row">
+
+
+        <div class="col-12">
+            <h2>Carte sul tavolo</h2>
+        </div>
+
+    </div>
+
+    <div class="row ">
+        <div class="col-4">
+            <div class="pedine">
+                <p class="pedina" *ngFor="let user of Match.users">
+                    {{ user.username }}
+                </p>
+            </div>
+        </div>
+        <div class="col-8 table-row" *ngFor="let cardOnTable of CardsOnTable">
+            <div class="card"
+                [ngClass]="{'disabled-card': User.username == Match.narrator.username || CardsInHand.includes(cardOnTable) || cardSelected == true}"
+                (click)="selectCard(cardOnTable)" *ngIf="revealCards">
+                <img class="card-img-top" src="https://via.placeholder.com/120x250.png" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title"> {{cardOnTable.name}} </h5>
+                </div>
+                <div *ngIf="CardsInHand.includes(cardOnTable)" class="card-footer">
+                    <small class="text-muted">La tua carta</small>
+                </div>
+            </div>
+        </div>
+       
+
+
+
+    </div>
+</div>
+
+
+
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div>
+                    <h2>Mie carte</h2>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-2" *ngFor="let cardinHand of CardsInHand" (click)="addCardOnTable(cardinHand)">
+
+                    <div class="card" [ngClass]="{'disabled-card': cardAdded == true}">
+                        <img class="card-img-top" src="https://via.placeholder.com/120x250.png" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title"> {{cardinHand.name}} </h5>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">La tua carta</small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
