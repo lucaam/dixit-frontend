@@ -20,7 +20,7 @@ export class InsertcardsComponent implements OnInit {
 
   insertCardForm = this.fb.group({
     name: ['', [
-      Validators.required, Validators.minLength(3)
+      Validators.required, Validators.minLength(2)
     ]],
     picture: ['', [Validators.required, Validators.minLength(4)]
     ],
