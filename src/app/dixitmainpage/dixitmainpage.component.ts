@@ -19,11 +19,13 @@ export class DixitmainpageComponent implements OnInit {
   Match: MatchModel = new MatchModel();
   User: webUserModel = new webUserModel();
   CardsInHand: Array<CardModel> = new Array<CardModel>();
+  UsersWon: Array<UserModel> = new Array<UserModel>();
   revealCards: boolean = false;
   CardsOnTable: Array<CardModel> = new Array<CardModel>();
   public browserRefresh: boolean;
 
-
+  clickedReady: boolean = false;
+  matchEnded: boolean = false;
   // Will allow the user click on his card when false
   cardAdded: boolean = true;
 
@@ -51,6 +53,8 @@ export class DixitmainpageComponent implements OnInit {
         //restore from local storage
         this.Match = JSON.parse(localStorage.getItem('match'));
         console.log("Match restored: " + this.Match.name);
+        console.log("Match restored: users length" + this.Match.users.length);
+
       }
 
     });
@@ -67,6 +71,16 @@ export class DixitmainpageComponent implements OnInit {
       }
     });
 
+    if(browserRefresh){
+      this.CardsInHand = JSON.parse(localStorage.getItem('cardsInHand'));
+      this.CardsOnTable = JSON.parse(localStorage.getItem('cardsOnTable'));
+      this.cardAdded = localStorage.getItem('cardAdded') == 'true' ? true : false
+      this.cardSelected = localStorage.getItem('cardSelected') == 'true' ? true : false
+      this.revealCards = localStorage.getItem('revealCards') == 'true' ? true : false
+      this.clickedReady = localStorage.getItem('clickedReady') == 'true' ? true : false
+
+    }
+
     
 
 
@@ -79,6 +93,8 @@ export class DixitmainpageComponent implements OnInit {
         console.log(data);
 
         this.CardsInHand = data.cards;
+        localStorage.setItem('cardsInHand', JSON.stringify(this.CardsInHand));
+
         console.log('this.cards = ', this.CardsInHand);//carte da visualizzare per l'utente 7
 
       });
@@ -88,7 +104,11 @@ export class DixitmainpageComponent implements OnInit {
 
         // Happens when a user click on button "Pronto a giocare"
         console.log('newUserReady');
-        this.Match.users.push(data);
+
+        if (this.Match.users.filter(e => e.username === data.username).length == 0) {
+          this.Match.users.push(data)
+          localStorage.setItem('match', JSON.stringify(this.Match));
+        }
         console.log(data);
       });
 
@@ -98,6 +118,7 @@ export class DixitmainpageComponent implements OnInit {
 
         // Happens when all players clicked on button "Pronto a giocare"
         this.cardAdded = false;
+        localStorage.setItem('cardAdded', 'false');
 
         console.log(data);
 
@@ -105,7 +126,10 @@ export class DixitmainpageComponent implements OnInit {
 
       this.socketService.socket.on('newCardOnTable', (data) => {
         this.CardsOnTable.push(data);
+        localStorage.setItem('cardsOnTable', JSON.stringify(this.CardsOnTable));
+
         console.log('There is a new card on table');
+        console.log("Cardontables lenght = " + this.CardsOnTable.length)
         console.log(data);
 
 
@@ -123,7 +147,16 @@ export class DixitmainpageComponent implements OnInit {
 
         console.log('Turn start');
         console.log(data);
-        this.revealCards = true;
+        let _ = this;
+
+
+        localStorage.setItem('revealCards', 'true');
+
+        setTimeout(function () {
+          _.revealCards = true;
+
+
+        }, 4000);
       });
 
       this.socketService.socket.on('turnEnded', (data) => {
@@ -139,10 +172,26 @@ export class DixitmainpageComponent implements OnInit {
         this.cardSelected = false;
         this.cardAdded = false;
 
+        localStorage.setItem('revealCards', 'false');
+        localStorage.setItem('cardSelected', 'false');
+        localStorage.setItem('cardAdded', 'false');
+        localStorage.setItem('match', JSON.stringify(this.Match));
+        localStorage.setItem('user', JSON.stringify(this.User));
+        localStorage.setItem('cardsOnTable', JSON.stringify(this.CardsOnTable));
+        localStorage.setItem('cardsInHand', JSON.stringify(this.CardsInHand));
+      
+
       });
 
       this.socketService.socket.on('endMatch', (data) => {
         console.log('Someone won');
+        this.matchEnded = true;
+        let _ = this;
+        this.UsersWon = data
+        setTimeout(function () {
+          _.router.navigate(['/'])
+        }, 6000);
+
         console.log(data);
 
 
@@ -160,6 +209,10 @@ export class DixitmainpageComponent implements OnInit {
     this.cardAdded = true;
 
     this.CardsOnTable.push(selectedCard);
+
+    localStorage.setItem('cardsOnTable', JSON.stringify(this.CardsOnTable));
+    localStorage.setItem('cardAdded', 'true');
+
     this.socketService.addCardOnTable(this.User, selectedCard, this.Match).then(res =>
       console.log(res)
     );
@@ -170,7 +223,7 @@ export class DixitmainpageComponent implements OnInit {
     console.log('Select a card that is on the table');
     console.log(this.Match);
     this.cardSelected = true;
-
+    localStorage.setItem('cardSelected', 'true');
     this.socketService.selectCardOnTable(this.User, selectedCardOnTable, this.Match).then(res =>
       console.log(res)
     );
@@ -179,6 +232,8 @@ export class DixitmainpageComponent implements OnInit {
 
   readyToPlay() {
     console.log(this.User);
+    this.clickedReady = true
+    localStorage.setItem('clickedReady', 'true');
 
     this.socketService.readyToPlay(this.User, this.Match);
 
