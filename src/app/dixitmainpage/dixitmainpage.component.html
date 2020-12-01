@@ -1,104 +1,111 @@
-<div class="container-fluid">
-
-    <div class="row">
-        <div class="col-12">
+<div *ngIf="!clickedReady" [ngClass]="{'overlay': !clickedReady}">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-12 align-self-center ">
             <button class="btn btn-primary" (click)="readyToPlay()"> Pronto a giocare</button>
         </div>
     </div>
-
 </div>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <h2>Dati</h2>
+<div *ngIf="matchEnded" [ngClass]="{'overlay': matchEnded}">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-12 align-self-center col-centered">
+            <p>Vincitori</p>
+            <p *ngFor="let userWon of UsersWon"> {{ userWon.username }} </p>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-5 col-lg-5">
-
-            <p>User: {{User.username}} <span *ngIf="User.username == Match.narrator.username"> - narrator</span></p> 
-            <p>Match: {{Match.name}}</p> 
-            <p>Points: {{User.score}}</p> 
-
-        </div>
-        
-        <div class="col-7">
-            <div class="board">
-                <div id="1">1</div>
-                <div id="2">2</div>
-                <div id="3">3</div>
-                <div id="4">4</div>
-                <div id="5">5</div>
-                <div id="6">6</div>
-                <div id="7">7</div>
-                <div id="8">8</div>
-                <div id="9">9</div>
-                <div id="10">10</div>
-                <div id="11">11</div>
-                <div id="12">12</div>
-                <div id="13">13</div>
-                <div id="14">14</div>
-                <div id="15">15</div>
-                <div id="16">16</div>
-                <div id="17">17</div>
-                <div id="18">18</div>
-                <div id="19">19</div>
-                <div id="20">20</div>
-                <div id="21">21</div>
-                <div id="22">22</div>
-                <div id="23">23</div>
-                <div id="24">24</div>
-                <div id="25">25</div>
-                <div id="26">26</div>
-                <div id="27">27</div>
-                <div id="28">28</div>
-                <div id="29">29</div>
-                <div id="30">30</div>
-            </div>
-        </div>
-
     </div>
 </div>
 
-
-<div class="container-fluid">
-    <div class="row">
-
-
-        <div class="col-12">
-            <h2>Carte sul tavolo</h2>
-        </div>
-
-    </div>
-
-    <div class="row ">
-        <div class="col-4">
-            <div class="pedine">
-                <p class="pedina" *ngFor="let user of Match.users">
-                    {{ user.username }}
-                </p>
+<div [ngClass]="{'blur': matchEnded || !clickedReady}" class="container-fluid">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h2>La tua situazione</h2>
             </div>
         </div>
-        <div class="col-8 table-row" *ngFor="let cardOnTable of CardsOnTable">
-            <div class="card"
-                [ngClass]="{'disabled-card': User.username == Match.narrator.username || CardsInHand.includes(cardOnTable) || cardSelected == true}"
-                (click)="selectCard(cardOnTable)" *ngIf="revealCards">
-                <img class="card-img-top" src="https://via.placeholder.com/120x250.png" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title"> {{cardOnTable.name}} </h5>
+        <div class="row">
+            <div class="col-md-5 col-lg-5">
+
+                <p>User: {{User.username}} <span *ngIf="User.username == Match.narrator.username"> - narrator</span></p>
+                <p>Match: {{Match.name}}</p>
+                <p>Points: {{User.score}}</p>
+
+                <div class="pedine">
+                    <h2>Giocatori pronti</h2>
+                    <p class="" *ngFor="let user of Match.users">
+                        {{ user.username }}
+                    </p>
                 </div>
-                <div *ngIf="CardsInHand.includes(cardOnTable)" class="card-footer">
-                    <small class="text-muted">La tua carta</small>
+
+            </div>
+
+            <div class="col-7">
+                <div class="board">
+                    <div class="board-box" id="1">1</div>
+                    <div class="board-box" id="2">2</div>
+                    <div class="board-box" id="3">3</div>
+                    <div class="board-box" id="4">4</div>
+                    <div class="board-box" id="5">5</div>
+                    <div class="board-box" id="6">6</div>
+                    <div class="board-box" id="7">7</div>
+                    <div class="board-box" id="8">8</div>
+                    <div class="board-box" id="9">9</div>
+                    <div class="board-box" id="10">10</div>
+                    <div class="board-box" id="11">11</div>
+                    <div class="board-box" id="12">12</div>
+                    <div class="board-box" id="13">13</div>
+                    <div class="board-box" id="14">14</div>
+                    <div class="board-box" id="15">15</div>
+                    <div class="board-box" id="16">16</div>
+                    <div class="board-box" id="17">17</div>
+                    <div class="board-box" id="18">18</div>
+                    <div class="board-box" id="19">19</div>
+                    <div class="board-box" id="20">20</div>
+                    <div class="board-box" id="21">21</div>
+                    <div class="board-box" id="22">22</div>
+                    <div class="board-box" id="23">23</div>
+                    <div class="board-box" id="24">24</div>
+                    <div class="board-box" id="25">25</div>
+                    <div class="board-box" id="26">26</div>
+                    <div class="board-box" id="27">27</div>
+                    <div class="board-box" id="28">28</div>
+                    <div class="board-box" id="29">29</div>
+                    <div class="board-box" id="30">30</div>
                 </div>
             </div>
+
         </div>
-       
-
-
-
     </div>
-</div>
+
+
+    <div class="container-fluid">
+        <div class="row">
+
+
+            <div class="col-12">
+                <h2>Carte sul tavolo</h2>
+            </div>
+
+        </div>
+
+        <div class="row ">
+
+            <div class="col-2" *ngFor="let cardOnTable of CardsOnTable">
+                <div class="card" [ngClass]="{'disabled-card': User.username == Match.narrator.username || CardsInHand.includes(cardOnTable) || cardSelected == true}" (click)="selectCard(cardOnTable)" *ngIf="revealCards">
+                    <img class="card-img-top dixit-image" src="http://localhost:3000/img/{{cardOnTable.picture}}" alt="Card image cap">
+                    <div *ngIf="CardsInHand.includes(cardOnTable)" class="card-footer">
+                        <small class="text-muted">La tua carta</small>
+                    </div>
+                </div>
+                <div class="card disabled-card-dixit" *ngIf="!revealCards">
+                    <img class="card-img-top dixit-image" src="http://localhost:3000/img/img209.jpg" alt="Card image dixit">
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
 
 
 
@@ -116,14 +123,18 @@
 
                 <div class="col-2" *ngFor="let cardinHand of CardsInHand" (click)="addCardOnTable(cardinHand)">
 
-                    <div class="card" [ngClass]="{'disabled-card': cardAdded == true}">
-                        <img class="card-img-top" src="https://via.placeholder.com/120x250.png" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title"> {{cardinHand.name}} </h5>
-                        </div>
+                    <div *ngIf="Match.users.length === Match.expectedPlayers" class="card" [ngClass]="{'disabled-card': cardAdded == true}">
+                        <img class="card-img-top dixit-image" src="http://localhost:3000/img/{{cardinHand.picture}}" alt="Card image cap">
+                        <!-- <div class="card-body">
+    
+                        </div> -->
                         <div class="card-footer">
                             <small class="text-muted">La tua carta</small>
                         </div>
+                    </div>
+
+                    <div class="card disabled-card-dixit" *ngIf="Match.users.length < Match.expectedPlayers">
+                        <img class="card-img-top dixit-image" src="http://localhost:3000/img/img209.jpg" alt="Card image dixit">
                     </div>
                 </div>
 
@@ -131,3 +142,4 @@
 
         </div>
     </div>
+</div>
