@@ -13,6 +13,7 @@ export class MatchModel{
     public goal:number;
     public actualPlayers:number;
     public expectedPlayers:number;
+    public cardsOnTable:Array<CardModel>;
 
     constructor(){
         this.name = "";
@@ -25,5 +26,6 @@ export class MatchModel{
         this.goal  = 0;
         this.actualPlayers = 0;
         this.expectedPlayers = 0;
+        this.cardsOnTable = new Array<CardModel>();
     }
 }
