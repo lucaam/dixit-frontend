@@ -81,7 +81,11 @@ export class DixitmainpageComponent implements OnInit {
 
     }
 
-    
+    function removeAllChildNodes(parent) {
+      while (parent.firstChild) {
+          parent.removeChild(parent.firstChild);
+      }
+  }
 
 
     if (this.Match !== undefined && this.User !== undefined) {
@@ -180,6 +184,16 @@ export class DixitmainpageComponent implements OnInit {
         localStorage.setItem('cardsOnTable', JSON.stringify(this.CardsOnTable));
         localStorage.setItem('cardsInHand', JSON.stringify(this.CardsInHand));
       
+        Array.from(document.getElementsByClassName("board-box")).forEach(function(item) {
+           removeAllChildNodes(item)
+       });
+        // Update tabellone
+        this.Match.users.forEach(element => {
+          var span = document.createElement('span')
+          span.classList.add("pedina")
+          span.textContent = element.username.charAt(0)
+          document.getElementById(element.score + "").appendChild(span)
+        });
 
       });
 
@@ -188,6 +202,15 @@ export class DixitmainpageComponent implements OnInit {
         this.matchEnded = true;
         let _ = this;
         this.UsersWon = data
+
+        localStorage.removeItem('revealCards');
+        localStorage.removeItem('cardSelected');
+        localStorage.removeItem('cardAdded');
+        localStorage.removeItem('match');
+        localStorage.removeItem('cardsOnTable');
+        localStorage.removeItem('user');
+        localStorage.removeItem('cardsInHand');
+
         setTimeout(function () {
           _.router.navigate(['/'])
         }, 6000);
