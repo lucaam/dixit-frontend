@@ -33,6 +33,16 @@ export class LoginComponent implements OnInit {
     // this.userService.getUserProfile("luca.amoriello@hotmail.it").then(result =>{
     //     console.log(result);
     // });
+
+          // Instead of removing everything we should retrive latest information about the user and set them into cookies/localstorage
+        localStorage.removeItem('revealCards');
+        localStorage.removeItem('cardSelected');
+        localStorage.removeItem('cardAdded');
+        localStorage.removeItem('match');
+        localStorage.removeItem('cardsOnTable');
+        localStorage.removeItem('user');
+        localStorage.removeItem('cardsInHand');
+        this.cookieService.deleteAll();
   }
 
   sendLogin() {
