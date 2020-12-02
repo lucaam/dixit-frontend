@@ -15,7 +15,7 @@ export class SocketioService {
 
   constructor() {   }
   setupSocketConnection() {
-    this.socket = io(environment.SOCKET_ENDPOINT);
+    this.socket = io(environment.ENDPOINT);
   }
 
   async joinMatch(match){
