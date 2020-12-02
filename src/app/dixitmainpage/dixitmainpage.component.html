@@ -39,37 +39,37 @@
 
         <div class="col-7">
             <div class="board">
-                <div class="board-box" id="0">Start</div>
-                <div class="board-box" id="1">1</div>
-                <div class="board-box" id="2">2</div>
-                <div class="board-box" id="3">3</div>
-                <div class="board-box" id="4">4</div>
-                <div class="board-box" id="5">5</div>
-                <div class="board-box" id="6">6</div>
-                <div class="board-box" id="7">7</div>
-                <div class="board-box" id="8">8</div>
-                <div class="board-box" id="9">9</div>
-                <div class="board-box" id="10">10</div>
-                <div class="board-box" id="11">11</div>
-                <div class="board-box" id="12">12</div>
-                <div class="board-box" id="13">13</div>
-                <div class="board-box" id="14">14</div>
-                <div class="board-box" id="15">15</div>
-                <div class="board-box" id="16">16</div>
-                <div class="board-box" id="17">17</div>
-                <div class="board-box" id="18">18</div>
-                <div class="board-box" id="19">19</div>
-                <div class="board-box" id="20">20</div>
-                <div class="board-box" id="21">21</div>
-                <div class="board-box" id="22">22</div>
-                <div class="board-box" id="23">23</div>
-                <div class="board-box" id="24">24</div>
-                <div class="board-box" id="25">25</div>
-                <div class="board-box" id="26">26</div>
-                <div class="board-box" id="27">27</div>
-                <div class="board-box" id="28">28</div>
-                <div class="board-box" id="29">29</div>
-                <div class="board-box" id="30">30</div>
+                <div class="board-box" id="0"></div>
+                <div class="board-box" id="1"></div>
+                <div class="board-box" id="2"></div>
+                <div class="board-box" id="3"></div>
+                <div class="board-box" id="4"></div>
+                <div class="board-box" id="5"></div>
+                <div class="board-box" id="6"></div>
+                <div class="board-box" id="7"></div>
+                <div class="board-box" id="8"></div>
+                <div class="board-box" id="9"></div>
+                <div class="board-box" id="10"></div>
+                <div class="board-box" id="11"></div>
+                <div class="board-box" id="12"></div>
+                <div class="board-box" id="13"></div>
+                <div class="board-box" id="14"></div>
+                <div class="board-box" id="15"></div>
+                <div class="board-box" id="16"></div>
+                <div class="board-box" id="17"></div>
+                <div class="board-box" id="18"></div>
+                <div class="board-box" id="19"></div>
+                <div class="board-box" id="20"></div>
+                <div class="board-box" id="21"></div>
+                <div class="board-box" id="22"></div>
+                <div class="board-box" id="23"></div>
+                <div class="board-box" id="24"></div>
+                <div class="board-box" id="25"></div>
+                <div class="board-box" id="26"></div>
+                <div class="board-box" id="27"></div>
+                <div class="board-box" id="28"></div>
+                <div class="board-box" id="29"></div>
+                <div class="board-box" id="30"></div>
             </div>
         </div>
 
@@ -97,13 +97,13 @@
 
         <div class="col-2" *ngFor="let cardOnTable of CardsOnTable">
             <div class="card" [ngClass]="{'disabled-card': User.username == Match.narrator.username || CardsInHand.includes(cardOnTable) || cardSelected == true}" (click)="selectCard(cardOnTable)" *ngIf="revealCards">
-                <img class="card-img-top dixit-image" src="http://localhost:3000/img/{{cardOnTable.picture}}" alt="Card image cap">
+                <img class="card-img-top dixit-image" src="{{environment.ENDPOINT}}img/{{cardOnTable.picture}}" alt="Card image cap">
                 <div *ngIf="CardsInHand.includes(cardOnTable)" class="card-footer">
                     <small class="text-muted">La tua carta</small>
                 </div>
             </div>
             <div class="card disabled-card-dixit" *ngIf="!revealCards">
-                <img class="card-img-top dixit-image" src="http://localhost:3000/img/img209.jpg" alt="Card image dixit">
+                <img class="card-img-top dixit-image" src="{{environment.ENDPOINT}}img/img209.jpg" alt="Card image dixit">
             </div>
         </div>
 
@@ -128,7 +128,7 @@
             <div class="col-2" *ngFor="let cardinHand of CardsInHand">
 
                 <div *ngIf="Match.users.length === Match.expectedPlayers" class="card" [ngClass]="{'disabled-card': cardAdded == true}" (click)="addCardOnTable(cardinHand)">
-                    <img class="card-img-top dixit-image" src="http://localhost:3000/img/{{cardinHand.picture}}" alt="Card image cap">
+                    <img class="card-img-top dixit-image" src="{{environment.ENDPOINT}}/img/{{cardinHand.picture}}" alt="Card image cap">
                     <!-- <div class="card-body">
     
                         </div> -->
@@ -138,7 +138,7 @@
                 </div>
 
                 <div class="card disabled-card-dixit" *ngIf="Match.users.length < Match.expectedPlayers">
-                    <img class="card-img-top dixit-image" src="http://localhost:3000/img/img209.jpg" alt="Card image dixit">
+                    <img class="card-img-top dixit-image" src="{{environment.ENDPOINT}}img/img209.jpg" alt="Card image dixit">
                 </div>
             </div>
 
