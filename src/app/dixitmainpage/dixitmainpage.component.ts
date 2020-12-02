@@ -237,7 +237,7 @@ export class DixitmainpageComponent implements OnInit {
       });
 
       this.socketService.socket.on('endMatch', (data) => {
-        console.log('Someone won');
+        console.log('Someone won', data);
         this.matchEnded = true;
         let _ = this;
         this.UsersWon = data
