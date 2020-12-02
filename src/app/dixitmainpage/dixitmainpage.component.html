@@ -128,7 +128,7 @@
             <div class="col-lg-2 col-md-2 col-xl-2 col-6 col-sm-4" *ngFor="let cardinHand of CardsInHand">
 
                 <div *ngIf="Match.users.length === Match.expectedPlayers" class="card" [ngClass]="{'disabled-card': cardAdded == true}" (click)="addCardOnTable(cardinHand)">
-                    <img class="card-img-top dixit-image" src="{{environment.ENDPOINT}}/img/{{cardinHand.picture}}" alt="Card image cap">
+                    <img class="card-img-top dixit-image" src="{{environment.ENDPOINT}}img/{{cardinHand.picture}}" alt="Card image cap">
                     <!-- <div class="card-body">
     
                         </div> -->
