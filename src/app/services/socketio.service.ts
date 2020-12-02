@@ -37,6 +37,13 @@ export class SocketioService {
   async selectCardOnTable(User: UserModel, card: CardModel, match: MatchModel){
     return this.socket.emit('selectCard', { user: User, match: match, card: card });
   }
+  async forceTurnStart( match: MatchModel){
+    return this.socket.emit('forceTurnStart', { match: match});
+  }
+  async forceTurnEnd( match: MatchModel){
+    return this.socket.emit('forceTurnEnd', { match: match});
+  }
+  
 
   async readyToStart(){
     return this.socket.on('readyToStart', (data) => {
