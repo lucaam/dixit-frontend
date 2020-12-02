@@ -24,9 +24,9 @@
     <div class="row">
         <div class="col-md-5 col-lg-5">
 
-            <p>User: {{User.username}} <span *ngIf="User.username == Match.narrator.username"> - narrator</span></p>
+            <p>Username: {{User.username}} <span *ngIf="User.username == Match.narrator.username"> - Narratore</span></p>
             <p>Match: {{Match.name}}</p>
-            <p>Points: {{User.score}}</p>
+            <p>Punti: {{User.score}}</p>
 
             <div class="pedine">
                 <h2>Giocatori pronti</h2>
@@ -37,7 +37,7 @@
 
         </div>
 
-        <div class="col-7">
+        <div class="col-lg-7 col-md-7 col-xl-7 col-12 col-sm-12">
             <div class="board">
                 <div class="board-box" id="0"></div>
                 <div class="board-box" id="1"></div>
@@ -95,7 +95,7 @@
 
     <div class="row ">
 
-        <div class="col-2" *ngFor="let cardOnTable of CardsOnTable">
+        <div class="col-lg-2 col-md-2 col-xl-2 col-6 col-sm-4" *ngFor="let cardOnTable of CardsOnTable">
             <div class="card" [ngClass]="{'disabled-card': User.username == Match.narrator.username || CardsInHand.includes(cardOnTable) || cardSelected == true}" (click)="selectCard(cardOnTable)" *ngIf="revealCards">
                 <img class="card-img-top dixit-image" src="{{environment.ENDPOINT}}img/{{cardOnTable.picture}}" alt="Card image cap">
                 <div *ngIf="CardsInHand.includes(cardOnTable)" class="card-footer">
@@ -125,7 +125,7 @@
 
         <div class="row">
 
-            <div class="col-2" *ngFor="let cardinHand of CardsInHand">
+            <div class="col-lg-2 col-md-2 col-xl-2 col-6 col-sm-4" *ngFor="let cardinHand of CardsInHand">
 
                 <div *ngIf="Match.users.length === Match.expectedPlayers" class="card" [ngClass]="{'disabled-card': cardAdded == true}" (click)="addCardOnTable(cardinHand)">
                     <img class="card-img-top dixit-image" src="{{environment.ENDPOINT}}/img/{{cardinHand.picture}}" alt="Card image cap">
