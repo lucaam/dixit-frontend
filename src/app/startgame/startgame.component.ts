@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatchService } from '../services/match.service';
+import { CookieService } from 'ngx-cookie-service';
 import { matchNgService } from '../services/matchNg.service';
 
 @Component({
@@ -14,6 +15,8 @@ export class StartgameComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private matchService: MatchService,
               private _router: Router,
+              private route: ActivatedRoute,
+              private cookieService: CookieService,
               private matchNgService: matchNgService) { }
 
 
@@ -28,7 +31,10 @@ export class StartgameComponent implements OnInit {
   });
 
   ngOnInit(): void {
-
+    if(this.cookieService.get('user-id')==undefined || localStorage.getItem('user') == undefined ){
+      this._router.navigateByUrl('/');
+      return
+    }
   }
 
   createMatch(): void{
