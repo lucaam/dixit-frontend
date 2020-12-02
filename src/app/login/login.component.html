@@ -21,7 +21,11 @@
                 <small *ngIf="loginForm.controls['password'].errors?.pattern && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Minimo 8 caratteri. Deve contentere almeno un numero, una maiuscola, una minuscola e un carattere speciale</small>
 
             </div>
+            <small *ngIf="emailError" id="loginFailureEmail" class="form-text text-danger">Email errata</small>
+            <small *ngIf="passwordError" id="loginFailurePassword" class="form-text text-danger">Password errata</small>
+
             <button [disabled]="loginForm.invalid" (click)="sendLogin()" type="submit" class="btn btn-primary">Accedi</button>
+
         </form>
     </div>
 

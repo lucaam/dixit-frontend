@@ -15,11 +15,15 @@ import { webUserNgService } from '../services/userNg.service';
 })
 export class LoginComponent implements OnInit {
 
+  public emailError: boolean
+  public passwordError: boolean
+
 
   constructor(private fb: FormBuilder, 
     private loginService: LoginService, 
     private webUserNgService : webUserNgService, 
     private cookieService: CookieService,
+    private userService: UserService,
     private _router: Router) { }
 
   loginForm = this.fb.group({
@@ -40,21 +44,43 @@ export class LoginComponent implements OnInit {
         localStorage.removeItem('cardAdded');
         localStorage.removeItem('match');
         localStorage.removeItem('cardsOnTable');
-        localStorage.removeItem('user');
         localStorage.removeItem('cardsInHand');
-        this.cookieService.deleteAll();
+
+        if(this.cookieService.get('user-id')!=undefined && localStorage.getItem('user') != undefined ){
+          localStorage.setItem('user', JSON.stringify(this.userService.getUserProfile(this.cookieService.get('user-id'), JSON.parse(localStorage.getItem('user')))))
+          this._router.navigateByUrl('/startgame');
+          return
+        }
+
   }
 
   sendLogin() {
     let _ = this;
+    this.emailError = false
+    this.passwordError = false
+
     _.loginService.sendLogin(this.loginForm.value).then(res =>{
-      var webUser = new webUserModel();
+      if(res.status == 200){
+        var webUser = new webUserModel();
       webUser.setWebUser(res.body['user'], res.body['token']);
       localStorage.setItem('user', JSON.stringify(webUser));
       _.webUserNgService.changeWebUser(webUser);
       this.cookieService.set('auth-token', webUser.token);
       this.cookieService.set('user-id', webUser._id);
       this._router.navigateByUrl('/startgame');
+      } 
+    }).catch(err => {
+      if(err.status == 400 && (err.error == "EMAIL or password is wrong" || err.error == '"email" must be a valid email')){
+        this.emailError = true
+        setTimeout(function () {
+          _.emailError = false
+        }, 4000);
+      } else if(err.status == 400 && err.error  == "Email or PASSWORD is wrong"){
+        this.passwordError = true
+        setTimeout(function () {
+          _.passwordError = false
+        }, 4000);
+      }
     });
     
   }

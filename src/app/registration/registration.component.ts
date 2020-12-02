@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { webUserNgService } from '../services/userNg.service';
 
@@ -10,8 +11,15 @@ import { webUserNgService } from '../services/userNg.service';
 })
 export class RegistrationComponent implements OnInit {
 
+
+  public emailError: boolean
+  public genericError: boolean
+  public usernameError: boolean
+  public registrationSuccess: boolean
+
   constructor(private fb: FormBuilder,
     private userService : UserService,
+    private router: Router,
     private webUserNgService : webUserNgService) { }
 
   registrationForm = this.fb.group({
@@ -31,8 +39,35 @@ export class RegistrationComponent implements OnInit {
   }
 
   createUser(){
-    this.userService.addNewUser(this.registrationForm.value).then(res =>{
-      console.log(res);
+    let _ = this
+
+    _.userService.addNewUser(this.registrationForm.value).then(res =>{
+
+      if(res.status == 200){
+        this.registrationSuccess = true
+        setTimeout(function () {
+          _.router.navigate(['/'])
+        }, 6000);
+
+      }
+    }).catch(error => {
+      console.log(error)
+      if (error.status == 400 && (error.error == "Email already exists" || error.error == '"email" must be a valid email')){
+        this.emailError = true
+        setTimeout(function () {
+          _.emailError = false
+        }, 4000);
+      }else if(error.status == 400 && error.error == "Username already exists"){
+        this.usernameError = true
+        setTimeout(function () {
+          _.usernameError = false
+        }, 4000);
+      }else{
+        this.genericError = true
+        setTimeout(function () {
+          _.genericError = false
+        }, 4000);
+      }
     })
   }
 

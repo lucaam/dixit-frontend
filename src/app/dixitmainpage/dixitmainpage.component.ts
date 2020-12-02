@@ -9,6 +9,7 @@ import { matchNgService } from '../services/matchNg.service';
 import { SocketioService } from '../services/socketio.service';
 import { webUserNgService } from '../services/userNg.service';
 import { browserRefresh } from '../app.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-dixitmainpage',
@@ -22,6 +23,9 @@ export class DixitmainpageComponent implements OnInit {
   UsersWon: Array<UserModel> = new Array<UserModel>();
   revealCards: boolean = false;
   CardsOnTable: Array<CardModel> = new Array<CardModel>();
+  forceEnd: boolean = false;
+  forceStart: boolean = false;
+  cardsSelected: number = 0;
   public browserRefresh: boolean;
 
   clickedReady: boolean = false;
@@ -34,9 +38,15 @@ export class DixitmainpageComponent implements OnInit {
   constructor(private matchNgService: matchNgService,
     private userNgService: webUserNgService,
     private socketService: SocketioService,
+    private cookieService: CookieService,
     private router: Router) { }
 
   async ngOnInit() {
+
+    if(this.cookieService.get('user-id')==undefined || localStorage.getItem('match')==undefined || localStorage.getItem('user') == undefined ){
+      this.router.navigateByUrl('/');
+      return
+    }
 
     this.browserRefresh = browserRefresh;
 
@@ -79,6 +89,13 @@ export class DixitmainpageComponent implements OnInit {
       this.revealCards = localStorage.getItem('revealCards') == 'true' ? true : false
       this.clickedReady = localStorage.getItem('clickedReady') == 'true' ? true : false
 
+      Array.from(document.getElementsByClassName("board-box")).forEach(function(item) {
+        removeAllChildNodes(item)
+    });
+
+      this.Match.users.forEach(element => {
+        this.generateUserSpawn(element)
+      });
     }
 
     function removeAllChildNodes(parent) {
@@ -111,8 +128,10 @@ export class DixitmainpageComponent implements OnInit {
 
         if (this.Match.users.filter(e => e.username === data.username).length == 0) {
           this.Match.users.push(data)
+          this.generateUserSpawn(data)
           localStorage.setItem('match', JSON.stringify(this.Match));
         }
+      
         console.log(data);
       });
 
@@ -123,6 +142,8 @@ export class DixitmainpageComponent implements OnInit {
         // Happens when all players clicked on button "Pronto a giocare"
         this.cardAdded = false;
         localStorage.setItem('cardAdded', 'false');
+
+        
 
         console.log(data);
 
@@ -136,13 +157,28 @@ export class DixitmainpageComponent implements OnInit {
         console.log("Cardontables lenght = " + this.CardsOnTable.length)
         console.log(data);
 
+        let _ = this
+        if(this.CardsOnTable.length == this.Match.expectedPlayers){
+          setTimeout(function () {
+            _.forceStart = true
+          }, 3500);
+        }
+
 
       });
 
       this.socketService.socket.on('newCardSelected', (data) => {
 
         console.log('A user selected a card');
-
+       
+        this.cardsSelected += 1
+        console.log(this.cardsSelected + " numero carte selezionate")
+        let _ = this
+        if(this.cardsSelected == this.Match.expectedPlayers - 1){
+          setTimeout(function () {
+            _.forceEnd = true
+          }, 3500);
+        }
         console.log(data);
 
       });
@@ -151,6 +187,9 @@ export class DixitmainpageComponent implements OnInit {
 
         console.log('Turn start');
         console.log(data);
+        this.forceEnd = false;
+        this.forceStart = false;
+        this.cardsSelected = 0
         let _ = this;
 
 
@@ -175,6 +214,9 @@ export class DixitmainpageComponent implements OnInit {
         this.revealCards = false;
         this.cardSelected = false;
         this.cardAdded = false;
+        this.forceEnd = false;
+        this.forceStart = false;
+        this.cardsSelected = 0
 
         localStorage.setItem('revealCards', 'false');
         localStorage.setItem('cardSelected', 'false');
@@ -189,10 +231,7 @@ export class DixitmainpageComponent implements OnInit {
        });
         // Update tabellone
         this.Match.users.forEach(element => {
-          var span = document.createElement('span')
-          span.classList.add("pedina")
-          span.textContent = element.username.charAt(0)
-          document.getElementById(element.score + "").appendChild(span)
+          this.generateUserSpawn(element)
         });
 
       });
@@ -246,6 +285,7 @@ export class DixitmainpageComponent implements OnInit {
     console.log('Select a card that is on the table');
     console.log(this.Match);
     this.cardSelected = true;
+    this.cardsSelected+=1
     localStorage.setItem('cardSelected', 'true');
     this.socketService.selectCardOnTable(this.User, selectedCardOnTable, this.Match).then(res =>
       console.log(res)
@@ -257,9 +297,33 @@ export class DixitmainpageComponent implements OnInit {
     console.log(this.User);
     this.clickedReady = true
     localStorage.setItem('clickedReady', 'true');
-
+    this.generateUserSpawn(this.User)
     this.socketService.readyToPlay(this.User, this.Match);
 
   }
 
+  forceTurnStart() {
+    this.forceStart = false
+
+    this.socketService.forceTurnStart(this.Match);
+
+  }
+
+  forceTurnEnd() {
+    this.forceEnd = false
+
+    this.socketService.forceTurnEnd(this.Match);
+
+  }
+
+  generateUserSpawn(user){
+     // Set user spawn to start
+     let span = document.createElement('span')
+     span.classList.add("pedina")
+     span.textContent = user.username.charAt(0)
+     document.getElementById(user.score + "").appendChild(span)
+     span.setAttribute("data-toggle", "tooltip")
+     span.setAttribute("data-placement", "top")
+     span.setAttribute("title", user.username + " - " + user.score + " pt")
+  }
 }

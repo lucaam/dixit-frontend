@@ -48,8 +48,14 @@
                 <small *ngIf="registrationForm.controls['password'].errors?.pattern && (registrationForm.controls['password'].dirty || registrationForm.controls['password'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Minimo 8 caratteri. Deve contentere almeno un numero, una maiuscola, una minuscola e un carattere speciale</small>
 
             </div>
+            <small *ngIf="registrationSuccess" id="registrationSuccess" class="form-text text-success">Registrazione effettuata con successo</small>
+            <small *ngIf="emailError" id="registrationFailureUsername" class="form-text text-danger">Email registrata in precedenza</small>
+            <small *ngIf="usernameError" id="registrationFailureEmail" class="form-text text-danger">Username non disponibile</small>
+            <small *ngIf="genericError" id="registrationFailureGeneric" class="form-text text-danger">Registrazione non effettuata</small>
 
-            <button [disabled]="registrationForm.invalid" (click)="createUser()" type="submit" class="btn btn-primary">Submit</button>
+
+            <button [disabled]="registrationForm.invalid" id="register" (click)="createUser()" type="submit" class="btn btn-primary">Submit</button>
+
         </form>
     </div>
 
