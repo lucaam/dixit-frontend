@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  ENDPOINT: window.location.protocol + "//"+ window.location.hostname + ":"+ window.location.port + "/" 
+
 };
