@@ -31,10 +31,19 @@ export class StartgameComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    if(this.cookieService.get('user-id')==undefined || localStorage.getItem('user') == undefined ){
+    if(this.cookieService.get('user-id')==undefined || localStorage.getItem('user') == undefined || this.cookieService.get('user-id')=='' || localStorage.getItem('user') == '' || localStorage.getItem('user').length == 0 ){
       this._router.navigateByUrl('/');
       return
     }
+
+    localStorage.removeItem('revealCards');
+    localStorage.removeItem('cardSelected');
+    localStorage.removeItem('cardAdded');
+    localStorage.removeItem('match');
+    localStorage.removeItem('cardsOnTable');
+    localStorage.removeItem('cardsInHand');
+
+    console.log(JSON.parse(localStorage.getItem('user')) )
   }
 
   createMatch(): void{

@@ -46,7 +46,8 @@ export class LoginComponent implements OnInit {
         localStorage.removeItem('cardsOnTable');
         localStorage.removeItem('cardsInHand');
 
-        if(this.cookieService.get('user-id')!=undefined && localStorage.getItem('user') != undefined ){
+        if(this.cookieService.get('user-id') !=undefined && this.cookieService.get('user-id')!=null && this.cookieService.get('user-id')!='' && localStorage.getItem('user') != undefined && localStorage.getItem('user') != '' ){
+
           localStorage.setItem('user', JSON.stringify(this.userService.getUserProfile(this.cookieService.get('user-id'), JSON.parse(localStorage.getItem('user')))))
           this._router.navigateByUrl('/startgame');
           return

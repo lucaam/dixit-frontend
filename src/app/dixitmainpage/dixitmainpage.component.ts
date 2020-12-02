@@ -10,6 +10,7 @@ import { SocketioService } from '../services/socketio.service';
 import { webUserNgService } from '../services/userNg.service';
 import { browserRefresh } from '../app.component';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dixitmainpage',
@@ -17,6 +18,8 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./dixitmainpage.component.scss']
 })
 export class DixitmainpageComponent implements OnInit {
+  environment = environment;
+
   Match: MatchModel = new MatchModel();
   User: webUserModel = new webUserModel();
   CardsInHand: Array<CardModel> = new Array<CardModel>();
@@ -43,7 +46,7 @@ export class DixitmainpageComponent implements OnInit {
 
   async ngOnInit() {
 
-    if(this.cookieService.get('user-id')==undefined || localStorage.getItem('match')==undefined || localStorage.getItem('user') == undefined ){
+    if(this.cookieService.get('user-id')==undefined || localStorage.getItem('user') == undefined ){
       this.router.navigateByUrl('/');
       return
     }
@@ -72,6 +75,18 @@ export class DixitmainpageComponent implements OnInit {
 
     this.userNgService.webUsershared.subscribe(user => {
       this.User = user;
+      console.log("user shared + ", user)
+      if(this.User == undefined || this.User == null || this.User.username == undefined){
+        console.log("this.User shared was null")
+        this.User = JSON.parse(localStorage.getItem('user'));
+        
+      }else {
+        if(!browserRefresh){
+          // Set user to local storage if is not null
+          localStorage.setItem('user', JSON.stringify(this.User));
+          console.log("User setted: " + this.User.name);
+        }
+      }
       if(browserRefresh){
         //restore from local storage
         console.log("Restore from local storage");
@@ -79,6 +94,8 @@ export class DixitmainpageComponent implements OnInit {
   
         console.log("User restored: " + this.User.username);
       }
+      
+      
     });
 
     if(browserRefresh){
@@ -317,6 +334,7 @@ export class DixitmainpageComponent implements OnInit {
   }
 
   generateUserSpawn(user){
+    console.log(user)
      // Set user spawn to start
      let span = document.createElement('span')
      span.classList.add("pedina")
