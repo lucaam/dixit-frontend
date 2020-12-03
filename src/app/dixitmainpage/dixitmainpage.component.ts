@@ -270,7 +270,9 @@ export class DixitmainpageComponent implements OnInit {
         console.log('Someone won', data);
         this.matchEnded = true;
         let _ = this;
-        this.UsersWon = data
+        data.forEach(element => {
+          this.UsersWon.push(element);
+        });
 
         localStorage.removeItem('revealCards');
         localStorage.removeItem('cardSelected');
@@ -281,7 +283,7 @@ export class DixitmainpageComponent implements OnInit {
         localStorage.removeItem('cardsInHand');
 
         setTimeout(function () {
-          _.router.navigate(['/'])
+          _.router.navigate(['/']);
         }, 6000);
 
         console.log(data);
