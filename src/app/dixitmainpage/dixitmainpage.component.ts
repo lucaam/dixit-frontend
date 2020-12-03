@@ -154,7 +154,7 @@ export class DixitmainpageComponent implements OnInit {
         }
         
         this.usersReady += 1
-
+        console.log("Users ready = " + this.usersReady)
         let _ = this
         if(this.usersReady == this.Match.expectedPlayers){
           setTimeout(function () {
@@ -326,6 +326,7 @@ export class DixitmainpageComponent implements OnInit {
   readyToPlay() {
     console.log(this.User);
     this.clickedReady = true
+    this.usersReady += 1
     localStorage.setItem('clickedReady', 'true');
     this.generateUserSpawn(this.User)
     this.socketService.readyToPlay(this.User, this.Match);
