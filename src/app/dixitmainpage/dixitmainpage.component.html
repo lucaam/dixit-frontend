@@ -90,6 +90,11 @@
                 class="btn btn-warning" (click)="forceTurnEnd()">Termina turno</button>
 
         </div>
+        <div class="col-3">
+            <button id="forceTurnReady" data-toggle="tooltip" data-placement="top" title="Si abilita se tutti i giocatori sono pronti ma il gioco non procede" *ngIf="this.User.username == this.Match.narrator.username && forceReady" [disabled]="!forceReady" class="btn btn-warning"
+                (click)="forceTurnReady()">Pronti a giocare</button>
+
+        </div>
 
     </div>
 

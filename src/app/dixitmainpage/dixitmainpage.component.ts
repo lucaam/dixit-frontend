@@ -28,7 +28,11 @@ export class DixitmainpageComponent implements OnInit {
   CardsOnTable: Array<CardModel> = new Array<CardModel>();
   forceEnd: boolean = false;
   forceStart: boolean = false;
+  forceReady: boolean = false;
+
   cardsSelected: number = 0;
+  usersReady: number = 0;
+
   public browserRefresh: boolean;
 
   clickedReady: boolean = false;
@@ -148,7 +152,15 @@ export class DixitmainpageComponent implements OnInit {
           this.generateUserSpawn(data)
           localStorage.setItem('match', JSON.stringify(this.Match));
         }
-      
+        
+        this.usersReady += 1
+
+        let _ = this
+        if(this.usersReady == this.Match.expectedPlayers){
+          setTimeout(function () {
+            _.forceReady = true
+          }, 1000);
+        }
         console.log(data);
       });
 
@@ -158,6 +170,7 @@ export class DixitmainpageComponent implements OnInit {
 
         // Happens when all players clicked on button "Pronto a giocare"
         this.cardAdded = false;
+        this.forceReady = false
         localStorage.setItem('cardAdded', 'false');
 
         
@@ -332,6 +345,15 @@ export class DixitmainpageComponent implements OnInit {
     this.socketService.forceTurnEnd(this.Match);
 
   }
+
+  forceTurnReady() {
+    this.forceReady = false
+
+    this.socketService.forceTurnReady(this.Match);
+
+  }
+
+  
 
   generateUserSpawn(user){
     console.log(user)

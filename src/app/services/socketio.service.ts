@@ -43,6 +43,10 @@ export class SocketioService {
   async forceTurnEnd( match: MatchModel){
     return this.socket.emit('forceTurnEnd', { match: match});
   }
+
+  async forceTurnReady( match: MatchModel){
+    return this.socket.emit('forceTurnReady', { match: match});
+  }
   
 
   async readyToStart(){
