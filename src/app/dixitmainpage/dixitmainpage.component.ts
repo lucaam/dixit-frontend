@@ -29,6 +29,7 @@ export class DixitmainpageComponent implements OnInit {
   forceEnd: boolean = false;
   forceStart: boolean = false;
   forceReady: boolean = true;
+  readyToStart: boolean = false;
 
   cardsSelected: number = 0;
   usersReady: number = 0;
@@ -109,6 +110,7 @@ export class DixitmainpageComponent implements OnInit {
       this.cardSelected = localStorage.getItem('cardSelected') == 'true' ? true : false
       this.revealCards = localStorage.getItem('revealCards') == 'true' ? true : false
       this.clickedReady = localStorage.getItem('clickedReady') == 'true' ? true : false
+      this.readyToStart = localStorage.getItem('readyToStart') == 'true' ? true : false
 
       Array.from(document.getElementsByClassName("board-box")).forEach(function(item) {
         removeAllChildNodes(item)
@@ -171,7 +173,9 @@ export class DixitmainpageComponent implements OnInit {
         // Happens when all players clicked on button "Pronto a giocare"
         this.cardAdded = false;
         this.forceReady = false
+        this.readyToStart = true;
         localStorage.setItem('cardAdded', 'false');
+        localStorage.setItem('readyToStart', 'true');
 
         
 
@@ -181,6 +185,13 @@ export class DixitmainpageComponent implements OnInit {
 
       this.socketService.socket.on('newCardOnTable', (data) => {
         this.CardsOnTable.push(data);
+
+
+        // Mix cards
+        if(true){
+          let random = Math.floor(Math.random() * this.CardsOnTable.length);
+          this.CardsOnTable = this.array_move(this.CardsOnTable, this.CardsOnTable.indexOf(data), random)
+        }
         localStorage.setItem('cardsOnTable', JSON.stringify(this.CardsOnTable));
 
         console.log('There is a new card on table');
@@ -283,7 +294,7 @@ export class DixitmainpageComponent implements OnInit {
         localStorage.removeItem('cardsInHand');
 
         setTimeout(function () {
-          _.router.navigate(['/']);
+          _.router.navigate(['/startgame']);
         }, 6000);
 
         console.log(data);
@@ -356,7 +367,16 @@ export class DixitmainpageComponent implements OnInit {
 
   }
 
-  
+  array_move(arr, old_index, new_index) {
+    if (new_index >= arr.length) {
+        var k = new_index - arr.length + 1;
+        while (k--) {
+            arr.push(undefined);
+        }
+    }
+    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+    return arr; // for testing
+};
 
   generateUserSpawn(user){
     console.log(user)
