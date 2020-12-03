@@ -28,7 +28,7 @@ export class DixitmainpageComponent implements OnInit {
   CardsOnTable: Array<CardModel> = new Array<CardModel>();
   forceEnd: boolean = false;
   forceStart: boolean = false;
-  forceReady: boolean = false;
+  forceReady: boolean = true;
 
   cardsSelected: number = 0;
   usersReady: number = 0;
@@ -156,11 +156,11 @@ export class DixitmainpageComponent implements OnInit {
         this.usersReady += 1
         console.log("Users ready = " + this.usersReady)
         let _ = this
-        if(this.usersReady == this.Match.expectedPlayers){
-          setTimeout(function () {
-            _.forceReady = true
-          }, 1000);
-        }
+        // if(this.usersReady == this.Match.expectedPlayers){
+        //   setTimeout(function () {
+        //     _.forceReady = true
+        //   }, 1000);
+        // }
         console.log(data);
       });
 
@@ -229,7 +229,7 @@ export class DixitmainpageComponent implements OnInit {
           _.revealCards = true;
 
 
-        }, 4000);
+        }, 500);
       });
 
       this.socketService.socket.on('turnEnded', (data) => {
@@ -361,6 +361,12 @@ export class DixitmainpageComponent implements OnInit {
      // Set user spawn to start
      let span = document.createElement('span')
      span.classList.add("pedina")
+     if(user.score > 25){
+      span.classList.add("text-danger")
+     } else if(user.score > 15 ){
+      span.classList.add("text-warning")
+
+     }
      span.textContent = user.username.charAt(0)
      document.getElementById(user.score + "").appendChild(span)
      span.setAttribute("data-toggle", "tooltip")
