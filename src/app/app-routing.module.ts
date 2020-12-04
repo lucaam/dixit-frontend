@@ -27,7 +27,7 @@ const routes: Routes = [
     
   },
   {
-    path: 'diximainpage',
+    path: 'dixitmainpage',
     component: DixitmainpageComponent,
     data: { title: 'Gioca a Dixit' },
     
