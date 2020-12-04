@@ -6,7 +6,7 @@
             <div class="form-group">
                 <label for="match-name">Inserisci nome match</label>
                 <input formControlName="name" type="text" class="form-control" id="match-name" aria-describedby="match-nameHelp" placeholder="Inserisci nome match">
-                <small id="match-nameHelp" class="form-text text-muted">Decidi un nome casuale per il match. Lo condividerai con gli altri giocatori.</small>
+                <small id="match-nameHelp" class="form-text text-muted">Decidi un nome casuale per il match. Lo condividerai con gli altri giocatori</small>
                 <small *ngIf="createMatchForm.controls['name'].errors?.required && (createMatchForm.controls['name'].dirty || createMatchForm.controls['name'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Campo richiesto</small>
                 <small *ngIf="createMatchForm.controls['name'].errors?.minlength && (createMatchForm.controls['name'].dirty || createMatchForm.controls['name'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">La lunghezza minima del nome del match deve essere di 4 caratteri</small>
 
@@ -14,10 +14,12 @@
             <div class="form-group">
                 <label for="n-players">Inserisci numero di giocatori</label>
                 <input formControlName="expectedPlayers" type="number" class="form-control" id="n-players" placeholder="Numero di giocatori">
-                <small id="n-players-nameHelp" class="form-text text-muted">Numero di giocatori che parteciperanno al gioco.</small>
+                <small id="n-players-nameHelp" class="form-text text-muted">Numero di giocatori che parteciperanno al gioco</small>
                 <small *ngIf="createMatchForm.controls['expectedPlayers'].errors?.required && (createMatchForm.controls['expectedPlayers'].dirty || createMatchForm.controls['expectedPlayers'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Campo richiesto</small>
                 <small *ngIf="createMatchForm.controls['expectedPlayers'].errors?.min && (createMatchForm.controls['expectedPlayers'].dirty || createMatchForm.controls['expectedPlayers'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Si gioca in almeno 3 giocatori</small>
                 <small *ngIf="createMatchForm.controls['expectedPlayers'].errors?.max && (createMatchForm.controls['expectedPlayers'].dirty || createMatchForm.controls['expectedPlayers'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Si gioca in massimo 12 giocatori</small>
+                <small *ngIf="matchErrorCreate" id="matchErrorCreate" class="form-text text-danger">Un match con questo nome esiste, inventane uno diverso</small>
+                <small *ngIf="authErrorCreate" id="authErrorCreate" class="form-text text-danger">Non riesco ad identificarti, riprova a fare l'accesso</small>
 
             </div>
             <button [disabled]="createMatchForm.invalid" (click)="createMatch()" type="submit" class="btn btn-primary">Inizia a giocare!</button>
@@ -32,10 +34,13 @@
             <div class="form-group formgroup-joinmatch">
                 <label for="match-name-join">Inserisci nome match</label>
                 <input formControlName="name" type="text" class="form-control" id="match-name-join" aria-describedby="match-name-joinHelp" placeholder="Inserisci nome match">
-                <small id="joinNameHelp" class="form-text text-muted">Inserisci il nome del match che un utente ha creato per partecipare.</small>
+                <small id="joinNameHelp" class="form-text text-muted">Inserisci il nome del match che un utente ha creato per partecipare</small>
                 <small *ngIf="joinMatchForm.controls['name'].errors?.required && (joinMatchForm.controls['name'].dirty || joinMatchForm.controls['name'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">Campo richiesto</small>
                 <small *ngIf="joinMatchForm.controls['name'].errors?.minlength && (joinMatchForm.controls['name'].dirty || joinMatchForm.controls['name'].touched)" id="cardPictureHelpInvalid" class="form-text text-danger">La lunghezza minima del nome del match deve essere di 4 caratteri</small>
-
+                
+                <small *ngIf="authError" id="authError" class="form-text text-danger">Non riesco ad identificarti, riprova a fare l'accesso</small>
+                <small *ngIf="matchErrorJoin" id="matchErrorJoin" class="form-text text-danger">Il match non esiste</small>
+         
             </div>
             <button [disabled]="joinMatchForm.invalid" type="submit" (click)="joinMatch()" class="btn btn-primary">Unisciti al match</button>
         </form>

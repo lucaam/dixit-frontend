@@ -12,6 +12,12 @@ import { matchNgService } from '../services/matchNg.service';
 })
 export class StartgameComponent implements OnInit {
 
+  public matchErrorJoin: boolean = false;
+  public matchErrorCreate: boolean = false;
+  public authError: boolean = false;
+  public authErrorCreate: boolean = false;
+
+  
   constructor(private fb: FormBuilder,
               private matchService: MatchService,
               private _router: Router,
@@ -48,25 +54,54 @@ export class StartgameComponent implements OnInit {
 
   createMatch(): void{
     console.log(this.createMatchForm.value);
+    let _ = this
 
     this.matchService.createMatch(this.createMatchForm.value).then(result =>
       {
         if(result.status === 200){
           this.matchNgService.changeMatch(result.body);
-          this._router.navigateByUrl('/diximainpage');
+          this._router.navigateByUrl('/dixitmainpage');
         }
         console.log(result);
+      }).catch(error => {
+        if (error.status == 400 && (error.error == "Match with specified name already exists")){
+          this.matchErrorCreate = true
+          setTimeout(function () {
+            _.matchErrorCreate = false
+          }, 4000);
+        }else if (error.status == 401 && (error.error == "Access denied")){
+          this.authErrorCreate = true
+          setTimeout(function () {
+            _.authErrorCreate = false
+            _._router.navigateByUrl('/');
+          }, 4000);
+        }
       });
 
   }
 
   joinMatch(): void{
     console.log(this.joinMatchForm.value);
+    let _ = this
+
     this.matchService.joinMatch(this.joinMatchForm.value).then(result =>{
       console.log(result);
       if ( result.status === 200 ){
         this.matchNgService.changeMatch(result.body);
-        this._router.navigateByUrl('/diximainpage');
+        this._router.navigateByUrl('/dixitmainpage');
+      }
+    }).catch(error => {
+      if (error.status == 400 && (error.error == "Match with specified name does not exists")){
+        this.matchErrorJoin = true
+        setTimeout(function () {
+          _.matchErrorJoin = false
+        }, 4000);
+      }else if (error.status == 401 && (error.error == "Access denied")){
+        this.authError = true
+        setTimeout(function () {
+          _.authError = false
+          _._router.navigateByUrl('/');
+        }, 4000);
       }
     });
 
