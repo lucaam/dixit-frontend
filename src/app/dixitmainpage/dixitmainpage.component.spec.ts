@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DixitmainpageComponent } from './dixitmainpage.component';
 
-describe('DiximainpageComponent', () => {
+describe('dixitmainpageComponent', () => {
   let component: DixitmainpageComponent;
   let fixture: ComponentFixture<DixitmainpageComponent>;
 
