@@ -103,9 +103,12 @@ export class DixitmainpageComponent implements OnInit {
       
     });
 
-    if(browserRefresh){
+    if (browserRefresh){
       this.CardsInHand = JSON.parse(localStorage.getItem('cardsInHand'));
       this.CardsOnTable = JSON.parse(localStorage.getItem('cardsOnTable'));
+      if(this.CardsOnTable == undefined){
+        this.CardsOnTable = new Array<CardModel>();
+      }
       this.cardAdded = localStorage.getItem('cardAdded') == 'true' ? true : false
       this.cardSelected = localStorage.getItem('cardSelected') == 'true' ? true : false
       this.revealCards = localStorage.getItem('revealCards') == 'true' ? true : false
@@ -366,6 +369,17 @@ export class DixitmainpageComponent implements OnInit {
     this.socketService.forceTurnReady(this.Match);
 
   }
+
+  forceRevealCard() {
+    this.revealCards = true
+
+  }
+
+  forceCleanTable() {
+    this.CardsOnTable = new Array<CardModel>();
+
+  }
+
 
   array_move(arr, old_index, new_index) {
     if (new_index >= arr.length) {

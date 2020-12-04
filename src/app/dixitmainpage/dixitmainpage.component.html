@@ -32,7 +32,7 @@
             <div class="pedine">
                 <h2>Giocatori pronti</h2>
                 <p class="" *ngFor="let user of Match.users">
-                    {{ user.username }}
+                    {{ user.username }} - {{ user.score}} pt. - <span *ngIf="user.username == Match.narrator.username"> - Narratore</span>
                 </p>
             </div>
 
@@ -142,12 +142,26 @@
 
 
     <div class="row">
-        <div class="col-12">
+        <div class="col-6">
             <div>
                 <h2>Mie carte</h2> <span *ngIf="User.username == Match.narrator.username"> - Sei il narratore</span>
             </div>
         </div>
+        <div class="col-2">
+            <button id="forceCleanTable" data-toggle="tooltip" data-placement="top"
+                title="Si abilita le carte sul tavolo non si puliscono"
+                class="btn btn-danger"
+                (click)="forceCleanTable()">Pulisci tavolo</button>
 
+        </div>
+        <div class="col-2">
+            <button id="forceRevealCard" data-toggle="tooltip" data-placement="top"
+                title="Si abilita le tue carte non si girano"
+                class="btn btn-danger"
+                (click)="forceRevealCard()">Gira carte</button>
+
+        </div>
+    </div>
         <div class="row">
 
             <div class="col-lg-2 col-md-3 col-xl-2 col-6 col-sm-4" *ngFor="let cardinHand of CardsInHand">
@@ -178,4 +192,3 @@
 
         </div>
 
-    </div>
