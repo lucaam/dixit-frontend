@@ -47,7 +47,10 @@ export class SocketioService {
   async forceTurnReady( match: MatchModel){
     return this.socket.emit('forceTurnReady', { match: match});
   }
-  
+
+  async exitGame( match: MatchModel, user: UserModel){
+    return this.socket.emit('exitGame', { match: match, user: user});
+  }
 
   async readyToStart(){
     return this.socket.on('readyToStart', (data) => {

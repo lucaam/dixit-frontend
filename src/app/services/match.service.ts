@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatchModel } from '../classes/matchModel';
 import { CookieDixiService } from './cookiedixit.service';
 import { globalVariables } from './globalVariables.service';
 
@@ -24,6 +25,13 @@ export class MatchService {
     headers = headers.append('auth-token', this.cookieDixi.getAuthTokenFromCookie());
     return await this.http.post(this.globalVariables.apiURL + this.globalVariables.apiVersion
       + this.globalVariables.apiMatch + "/join", namematch, { headers: headers, observe: 'response' }).toPromise();
+  }
+
+  async exitMatch(match: MatchModel) {
+    let headers = new HttpHeaders();
+    headers = headers.append('auth-token', this.cookieDixi.getAuthTokenFromCookie());
+    return await this.http.post(this.globalVariables.apiURL + this.globalVariables.apiVersion
+      + this.globalVariables.apiMatch + "/exit", match, { headers: headers, observe: 'response' }).toPromise();
   }
 }
 
