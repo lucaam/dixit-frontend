@@ -17,6 +17,7 @@ export class UserModel {
     public score:number;
     public victories:number;
     public defeats: number;
+    public avatar: string;
 
 
     constructor(){
@@ -34,6 +35,7 @@ export class UserModel {
         this.score = 0;
         this.victories = 0;
         this.defeats = 0;
+        this.avatar = "";
     }
 
     setUser(user){
@@ -51,5 +53,6 @@ export class UserModel {
         this.score = user.score;
         this.victories = user.victories;
         this.defeats = user.defeats;
+        this.avatar = user.avatar;
     }
 }

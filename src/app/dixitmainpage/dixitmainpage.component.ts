@@ -11,11 +11,13 @@ import { webUserNgService } from '../services/userNg.service';
 import { browserRefresh } from '../app.component';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
+import { globalVariables } from '../services/globalVariables.service';
+import { MatchService } from '../services/match.service';
 
 @Component({
   selector: 'app-dixitmainpage',
   templateUrl: './dixitmainpage.component.html',
-  styleUrls: ['./dixitmainpage.component.scss']
+  styleUrls: ['./dixitmainpage.component.scss'],
 })
 export class DixitmainpageComponent implements OnInit {
   environment = environment;
@@ -43,93 +45,100 @@ export class DixitmainpageComponent implements OnInit {
 
   // Will allow the user select a card on the table when it is false
   cardSelected: boolean = false;
-  constructor(private matchNgService: matchNgService,
+  constructor(
+    private matchNgService: matchNgService,
     private userNgService: webUserNgService,
     private socketService: SocketioService,
     private cookieService: CookieService,
-    private router: Router) { }
+    private matchService: MatchService,
+    private router: Router
+  ) {}
 
   async ngOnInit() {
-
-    if(this.cookieService.get('user-id')==undefined || localStorage.getItem('user') == undefined ){
+    if (
+      this.cookieService.get('user-id') == undefined ||
+      localStorage.getItem('user') == undefined
+    ) {
       this.router.navigateByUrl('/');
-      return
+      return;
     }
 
     this.browserRefresh = browserRefresh;
 
-      
-
-    this.matchNgService.matchshared.subscribe(match => {
+    this.matchNgService.matchshared.subscribe((match) => {
       this.Match = match;
-      if(!browserRefresh){
+      if (!browserRefresh) {
         //restore from local storage
         localStorage.setItem('match', JSON.stringify(this.Match));
-        console.log("Match setted: " + this.Match.name);
+        console.log('Match setted: ' + this.Match.name);
       }
-      if(browserRefresh){
+      if (browserRefresh) {
         //restore from local storage
         this.Match = JSON.parse(localStorage.getItem('match'));
-        console.log("Match restored: " + this.Match.name);
-        console.log("Match restored: users length" + this.Match.users.length);
-
+        console.log('Match restored: ' + this.Match.name);
+        console.log('Match restored: users length' + this.Match.users.length);
       }
-
     });
 
-
-    this.userNgService.webUsershared.subscribe(user => {
+    this.userNgService.webUsershared.subscribe((user) => {
       this.User = user;
-      console.log("user shared + ", user)
-      if(this.User == undefined || this.User == null || this.User.username == undefined){
-        console.log("this.User shared was null")
+      console.log('user shared + ', user);
+      if (
+        this.User == undefined ||
+        this.User == null ||
+        this.User.username == undefined
+      ) {
+        console.log('this.User shared was null');
         this.User = JSON.parse(localStorage.getItem('user'));
-        
-      }else {
-        if(!browserRefresh){
+      } else {
+        if (!browserRefresh) {
           // Set user to local storage if is not null
           localStorage.setItem('user', JSON.stringify(this.User));
-          console.log("User setted: " + this.User.name);
+          console.log('User setted: ' + this.User.name);
         }
       }
-      if(browserRefresh){
+      if (browserRefresh) {
         //restore from local storage
-        console.log("Restore from local storage");
+        console.log('Restore from local storage');
         this.User = JSON.parse(localStorage.getItem('user'));
-  
-        console.log("User restored: " + this.User.username);
+
+        console.log('User restored: ' + this.User.username);
       }
-      
-      
     });
 
-    if (browserRefresh){
+    if (browserRefresh) {
       this.CardsInHand = JSON.parse(localStorage.getItem('cardsInHand'));
       this.CardsOnTable = JSON.parse(localStorage.getItem('cardsOnTable'));
-      if(this.CardsOnTable == undefined){
+      if (this.CardsOnTable == undefined) {
         this.CardsOnTable = new Array<CardModel>();
       }
-      this.cardAdded = localStorage.getItem('cardAdded') == 'true' ? true : false
-      this.cardSelected = localStorage.getItem('cardSelected') == 'true' ? true : false
-      this.revealCards = localStorage.getItem('revealCards') == 'true' ? true : false
-      this.clickedReady = localStorage.getItem('clickedReady') == 'true' ? true : false
-      this.readyToStart = localStorage.getItem('readyToStart') == 'true' ? true : false
+      this.cardAdded =
+        localStorage.getItem('cardAdded') == 'true' ? true : false;
+      this.cardSelected =
+        localStorage.getItem('cardSelected') == 'true' ? true : false;
+      this.revealCards =
+        localStorage.getItem('revealCards') == 'true' ? true : false;
+      this.clickedReady =
+        localStorage.getItem('clickedReady') == 'true' ? true : false;
+      this.readyToStart =
+        localStorage.getItem('readyToStart') == 'true' ? true : false;
 
-      Array.from(document.getElementsByClassName("board-box")).forEach(function(item) {
-        removeAllChildNodes(item)
-    });
+      Array.from(document.getElementsByClassName('board-box')).forEach(
+        function (item) {
+          removeAllChildNodes(item);
+        }
+      );
 
-      this.Match.users.forEach(element => {
-        this.generateUserSpawn(element)
+      this.Match.users.forEach((element) => {
+        this.generateUserSpawn(element);
       });
     }
 
     function removeAllChildNodes(parent) {
       while (parent.firstChild) {
-          parent.removeChild(parent.firstChild);
+        parent.removeChild(parent.firstChild);
       }
-  }
-
+    }
 
     if (this.Match !== undefined && this.User !== undefined) {
       this.socketService.setupSocketConnection();
@@ -142,25 +151,24 @@ export class DixitmainpageComponent implements OnInit {
         this.CardsInHand = data.cards;
         localStorage.setItem('cardsInHand', JSON.stringify(this.CardsInHand));
 
-        console.log('this.cards = ', this.CardsInHand);//carte da visualizzare per l'utente 7
-
+        console.log('this.cards = ', this.CardsInHand); //carte da visualizzare per l'utente 7
       });
 
-
       this.socketService.socket.on('newUserReady', (data) => {
-
         // Happens when a user click on button "Pronto a giocare"
         console.log('newUserReady');
 
-        if (this.Match.users.filter(e => e.username === data.username).length == 0) {
-          this.Match.users.push(data)
-          this.generateUserSpawn(data)
+        if (
+          this.Match.users.filter((e) => e.username === data.username).length ==
+          0
+        ) {
+          this.Match.users.push(data);
           localStorage.setItem('match', JSON.stringify(this.Match));
         }
-        
-        this.usersReady += 1
-        console.log("Users ready = " + this.usersReady)
-        let _ = this
+
+        this.usersReady += 1;
+        console.log('Users ready = ' + this.usersReady);
+        let _ = this;
         // if(this.usersReady == this.Match.expectedPlayers){
         //   setTimeout(function () {
         //     _.forceReady = true
@@ -170,88 +178,86 @@ export class DixitmainpageComponent implements OnInit {
       });
 
       this.socketService.socket.on('readyToStart', (data) => {
-
         console.log('we are ready to start');
 
         // Happens when all players clicked on button "Pronto a giocare"
         this.cardAdded = false;
-        this.forceReady = false
+        this.forceReady = false;
         this.readyToStart = true;
         localStorage.setItem('cardAdded', 'false');
         localStorage.setItem('readyToStart', 'true');
 
-        
-
         console.log(data);
+      });
 
+      this.socketService.socket.on('userExit', (data) => {
+        console.log('User exit');
+
+        this.Match = data.match;
       });
 
       this.socketService.socket.on('newCardOnTable', (data) => {
         this.CardsOnTable.push(data);
 
-
         // Mix cards
-        if(true){
+        if (true) {
           let random = Math.floor(Math.random() * this.CardsOnTable.length);
-          this.CardsOnTable = this.array_move(this.CardsOnTable, this.CardsOnTable.indexOf(data), random)
+          this.CardsOnTable = this.array_move(
+            this.CardsOnTable,
+            this.CardsOnTable.indexOf(data),
+            random
+          );
         }
         localStorage.setItem('cardsOnTable', JSON.stringify(this.CardsOnTable));
 
         console.log('There is a new card on table');
-        console.log("Cardontables lenght = " + this.CardsOnTable.length)
+        console.log('Cardontables lenght = ' + this.CardsOnTable.length);
         console.log(data);
 
-        let _ = this
-        if(this.CardsOnTable.length == this.Match.expectedPlayers){
+        let _ = this;
+        if (this.CardsOnTable.length == this.Match.expectedPlayers) {
           setTimeout(function () {
-            _.forceStart = true
+            _.forceStart = true;
           }, 3500);
         }
-
-
       });
 
       this.socketService.socket.on('newCardSelected', (data) => {
-
         console.log('A user selected a card');
-       
-        this.cardsSelected += 1
-        console.log(this.cardsSelected + " numero carte selezionate")
-        let _ = this
-        if(this.cardsSelected == this.Match.expectedPlayers - 1){
+
+        this.cardsSelected += 1;
+        console.log(this.cardsSelected + ' numero carte selezionate');
+        let _ = this;
+        if (this.cardsSelected == this.Match.expectedPlayers - 1) {
           setTimeout(function () {
-            _.forceEnd = true
+            _.forceEnd = true;
           }, 3500);
         }
         console.log(data);
-
       });
 
       this.socketService.socket.on('turnStart', (data) => {
-
         console.log('Turn start');
         console.log(data);
         this.forceEnd = false;
         this.forceStart = false;
-        this.cardsSelected = 0
+        this.cardsSelected = 0;
         let _ = this;
-
 
         localStorage.setItem('revealCards', 'true');
 
         setTimeout(function () {
           _.revealCards = true;
-
-
         }, 500);
       });
 
       this.socketService.socket.on('turnEnded', (data) => {
-
         console.log('Turn is ended');
         console.log(data);
 
-        this.User = data.users.filter((x: webUserModel) => x.username === this.User.username)[0];
+        this.User = data.users.filter(
+          (x: webUserModel) => x.username === this.User.username
+        )[0];
         this.Match = data;
         this.CardsOnTable = [];
         this.CardsInHand = this.User.cards;
@@ -260,7 +266,7 @@ export class DixitmainpageComponent implements OnInit {
         this.cardAdded = false;
         this.forceEnd = false;
         this.forceStart = false;
-        this.cardsSelected = 0
+        this.cardsSelected = 0;
 
         localStorage.setItem('revealCards', 'false');
         localStorage.setItem('cardSelected', 'false');
@@ -269,22 +275,23 @@ export class DixitmainpageComponent implements OnInit {
         localStorage.setItem('user', JSON.stringify(this.User));
         localStorage.setItem('cardsOnTable', JSON.stringify(this.CardsOnTable));
         localStorage.setItem('cardsInHand', JSON.stringify(this.CardsInHand));
-      
-        Array.from(document.getElementsByClassName("board-box")).forEach(function(item) {
-           removeAllChildNodes(item)
-       });
-        // Update tabellone
-        this.Match.users.forEach(element => {
-          this.generateUserSpawn(element)
-        });
 
+        Array.from(document.getElementsByClassName('board-box')).forEach(
+          function (item) {
+            removeAllChildNodes(item);
+          }
+        );
+        // Update tabellone
+        this.Match.users.forEach((element) => {
+          this.generateUserSpawn(element);
+        });
       });
 
       this.socketService.socket.on('endMatch', (data) => {
         console.log('Someone won', data);
         this.matchEnded = true;
         let _ = this;
-        data.forEach(element => {
+        data.forEach((element) => {
           this.UsersWon.push(element);
         });
 
@@ -293,7 +300,6 @@ export class DixitmainpageComponent implements OnInit {
         localStorage.removeItem('cardAdded');
         localStorage.removeItem('match');
         localStorage.removeItem('cardsOnTable');
-        localStorage.removeItem('user');
         localStorage.removeItem('cardsInHand');
 
         setTimeout(function () {
@@ -301,15 +307,9 @@ export class DixitmainpageComponent implements OnInit {
         }, 6000);
 
         console.log(data);
-
-
       });
-
     }
-
   }
-
-
 
   addCardOnTable(selectedCard) {
     console.log('Add a card on table');
@@ -321,92 +321,106 @@ export class DixitmainpageComponent implements OnInit {
     localStorage.setItem('cardsOnTable', JSON.stringify(this.CardsOnTable));
     localStorage.setItem('cardAdded', 'true');
 
-    this.socketService.addCardOnTable(this.User, selectedCard, this.Match).then(res =>
-      console.log(res)
-    );
-
+    this.socketService
+      .addCardOnTable(this.User, selectedCard, this.Match)
+      .then((res) => console.log(res));
   }
 
   selectCard(selectedCardOnTable) {
     console.log('Select a card that is on the table');
     console.log(this.Match);
     this.cardSelected = true;
-    this.cardsSelected+=1
+    this.cardsSelected += 1;
     localStorage.setItem('cardSelected', 'true');
-    this.socketService.selectCardOnTable(this.User, selectedCardOnTable, this.Match).then(res =>
-      console.log(res)
-    );
-
+    this.socketService
+      .selectCardOnTable(this.User, selectedCardOnTable, this.Match)
+      .then((res) => console.log(res));
   }
 
   readyToPlay() {
     console.log(this.User);
-    this.clickedReady = true
-    this.usersReady += 1
+    this.clickedReady = true;
+    this.usersReady += 1;
     localStorage.setItem('clickedReady', 'true');
-    this.generateUserSpawn(this.User)
+    this.generateUserSpawn(this.User);
     this.socketService.readyToPlay(this.User, this.Match);
-
   }
 
   forceTurnStart() {
-    this.forceStart = false
+    this.forceStart = false;
 
     this.socketService.forceTurnStart(this.Match);
-
   }
 
   forceTurnEnd() {
-    this.forceEnd = false
+    this.forceEnd = false;
 
     this.socketService.forceTurnEnd(this.Match);
-
   }
 
   forceTurnReady() {
-    this.forceReady = false
+    this.forceReady = false;
 
     this.socketService.forceTurnReady(this.Match);
-
   }
 
   forceRevealCard() {
-    this.revealCards = true
-
+    this.revealCards = true;
   }
 
   forceCleanTable() {
     this.CardsOnTable = new Array<CardModel>();
-
   }
 
+  exitGame() {
+    this.socketService.exitGame(this.Match, this.User);
+    console.log(this.Match.name)
+    this.matchService.exitMatch(this.Match);
+    this.router.navigate(['/startgame']);
+  }
 
   array_move(arr, old_index, new_index) {
     if (new_index >= arr.length) {
-        var k = new_index - arr.length + 1;
-        while (k--) {
-            arr.push(undefined);
-        }
+      var k = new_index - arr.length + 1;
+      while (k--) {
+        arr.push(undefined);
+      }
     }
     arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
     return arr; // for testing
-};
+  }
 
-  generateUserSpawn(user){
-    console.log(user)
-     // Set user spawn to start
-     let span = document.createElement('span')
-     span.classList.add("pedina")
-     if(user.score > 25){
-      span.classList.add("text-danger")
-     } else if(user.score > 15 ){
-      span.classList.add("text-warning")
+  generateUserSpawn(user) {
+    console.log(user);
+    // Set user spawn to start
 
-     }
-     span.textContent = user.username.charAt(0)
-     document.getElementById(user.score + "").appendChild(span)
-     span.setAttribute("data-toggle", "tooltip")
-     span.setAttribute("data-placement", "top")
-     span.setAttribute("title", user.username + " - " + user.score + " pt")
+    if (user.score == 0) {
+      return;
+    }
+
+    let span = document.createElement('span');
+    span.classList.add('pedina');
+    if (user.score > 25) {
+      span.classList.add('text-danger');
+    } else if (user.score > 15) {
+      span.classList.add('text-warning');
+    }
+
+    if (user.avatar == 'default.png') {
+      span.textContent = user.username.charAt(0);
+      document.getElementById(user.score + '').appendChild(span);
+      span.setAttribute('data-toggle', 'tooltip');
+      span.setAttribute('data-placement', 'top');
+      span.setAttribute('title', user.username + ' - ' + user.score + ' pt');
+    } else {
+      let img = document.createElement('img');
+      img.src = environment.ENDPOINT + 'img/' + 'avatars/' + user.avatar;
+      img.classList.add('small-avatar');
+      img.classList.add('img-fluid');
+      img.setAttribute('data-toggle', 'tooltip');
+      img.setAttribute('data-placement', 'top');
+      img.setAttribute('title', user.username + ' - ' + user.score + ' pt');
+      document.getElementById(user.score + '').appendChild(img);
+    }
   }
 }
