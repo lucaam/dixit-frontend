@@ -26,13 +26,13 @@
 
             <p>Username: {{User.username}} <span *ngIf="User.username == Match.narrator.username"> - Narratore</span>
             </p>
-            <p>Match: {{Match.name}} - <button *ngIf="Match.expectedPlayers > 3" class="btn btn-sm btn-danger" (click)="exitGame()"> Esci</button></p> 
+            <p>Match: {{Match.name}} <button *ngIf="Match.expectedPlayers > 3" class="btn btn-sm btn-danger" (click)="exitGame()"> Esci</button></p> 
             <p>Punti: {{User.score}}</p>
 
             <div class="pedine">
                 <h2>Giocatori pronti</h2>
                 <p class="" *ngFor="let user of Match.users">
-                    <img class="small-avatar img-fluid" src="{{environment.ENDPOINT}}img/avatars/{{User.avatar}}" alt="{{User.username}}'s avatar">
+                    <img class="small-avatar img-fluid" src="{{environment.ENDPOINT}}img/avatars/{{user.avatar}}" alt="{{user.username}}'s avatar">
                     {{ user.username }} - {{ user.score}} pt.<span *ngIf="user.username == Match.narrator.username"> - Narratore</span>
                 </p>
             </div>
